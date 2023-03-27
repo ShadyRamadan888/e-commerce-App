@@ -6,6 +6,7 @@
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -18,14 +19,14 @@
         android:theme="@style/Theme.E_commerceApp"
         tools:targetApi="31">
         <activity
-            android:name=".ui.activties.SplashScreen"
+            android:name="com.example.ui.activties.SplashScreen"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".ui.activties.MainActivity"
+            android:name="com.example.ui.activties.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

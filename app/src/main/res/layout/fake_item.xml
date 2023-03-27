@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
     <androidx.cardview.widget.CardView
@@ -13,45 +14,25 @@
 
         <com.balysv.materialripple.MaterialRippleLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            style="@style/RippleDesign">
+            style="@style/RippleDesign"
+            android:layout_height="match_parent">
 
             <LinearLayout
                 android:id="@+id/item_layout"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:background="#FFFFFF"
                 android:orientation="vertical">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="2">
-
-
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginEnd="10dp"
-                        android:gravity="end">
-
-                        <ImageView
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
-                            android:src="@drawable/fav_not_selected" />
-                    </RelativeLayout>
-                </LinearLayout>
-
-
                 <ImageView
                     android:id="@+id/product_image"
-                    android:layout_width="150dp"
+                    android:layout_width="130dp"
+                    android:layout_gravity="center"
+                    android:foregroundGravity="center"
                     android:layout_height="120dp" />
+
                 <TextView
-                    android:id="@+id/product_name"
+                    android:id="@+id/fake_product_name"
                     android:layout_width="wrap_content"
                     android:textColor="@color/black"
                     android:textStyle="bold"
@@ -63,6 +44,7 @@
                     android:layout_marginStart="10dp"
                     android:layout_height="wrap_content"/>
 
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -70,16 +52,16 @@
                     android:weightSum="2">
 
                     <TextView
-                        android:id="@+id/product_price"
+                        android:id="@+id/fakePrice"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginStart="10dp"
+                        android:layout_marginEnd="16dp"
                         android:text="$23.09"
                         android:textColor="@color/app"
-                        android:textSize="20sp"
                         android:layout_weight="1"
-                        android:maxLines="1"
+                        android:textSize="20sp"
                         android:textStyle="bold" />
 
                     <RelativeLayout
@@ -93,17 +75,15 @@
                         <Button
                             android:id="@+id/add_btn"
                             android:layout_width="wrap_content"
-                            android:layout_height="40dp"
+                            android:layout_height="30dp"
                             android:layout_marginBottom="10dp"
                             android:background="@drawable/add_btn_background"
-                            android:text="Add" />
+                            android:text="Add"
+                            tools:ignore="SmallSp" />
 
                     </RelativeLayout>
                 </LinearLayout>
-
             </LinearLayout>
         </com.balysv.materialripple.MaterialRippleLayout>
     </androidx.cardview.widget.CardView>
-
-
 </RelativeLayout>

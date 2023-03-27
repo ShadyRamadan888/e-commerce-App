@@ -28,6 +28,7 @@
         android:layout_gravity="start"
         android:background="#D7DDDD"
         app:itemIconTint="@color/app"
+        android:backgroundTint="@color/app"
         app:itemTextColor="@color/app"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

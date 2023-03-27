@@ -8,7 +8,6 @@ import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
@@ -25,21 +24,16 @@ object NetworkModule {
             .readTimeout(20, TimeUnit.SECONDS)
             .build()
     }
-
     @Provides
     @Singleton
-    fun provideRetrofit(okHttpClient: OkHttpClient):Retrofit{
+    fun provideApiService(okHttpClient: OkHttpClient):ApiService{
 
         return Retrofit.Builder()
-            .baseUrl("https://dummyjson.com/")
+            .baseUrl("https://student.valuxapps.com/api/")
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
+            .create(ApiService::class.java)
     }
 
-    @Provides
-    @Singleton
-    fun provideApiService(retrofit: Retrofit):ApiService{
-        return retrofit.create(ApiService::class.java)
-    }
 }

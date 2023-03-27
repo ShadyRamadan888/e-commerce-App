@@ -1,4 +1,4 @@
-package com.example.e_commerceapp.ui.activties
+package com.example.ui.activties
 
 import android.app.ProgressDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -12,7 +12,6 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import com.example.e_commerceapp.R
-import com.example.e_commerceapp.ui.fragment.HomeFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import dagger.hilt.android.AndroidEntryPoint
@@ -26,7 +25,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var bottomNavigationView: BottomNavigationView
     private lateinit var navHostFragment: NavHostFragment
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -34,15 +32,13 @@ class MainActivity : AppCompatActivity() {
 
         //nav
         navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+            supportFragmentManager.findFragmentById(com.example.e_commerceapp.R.id.nav_host_fragment) as NavHostFragment
 
 
-        bottomNavigationView = findViewById(R.id.bottomNavigationView)
+        bottomNavigationView = findViewById(com.example.e_commerceapp.R.id.bottomNavigationView)
 
         navController = navHostFragment.navController
         bottomNavigationView.setupWithNavController(navController)
-
-
     }
 
 

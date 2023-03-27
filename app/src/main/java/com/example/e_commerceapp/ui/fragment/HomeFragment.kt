@@ -1,23 +1,27 @@
 package com.example.e_commerceapp.ui.fragment
 
-import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.GridView
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.e_commerceapp.utils.CheckInternetConnection
 import com.example.e_commerceapp.R
 import com.example.e_commerceapp.ui.LoadingDialog
-import com.example.e_commerceapp.ui.adapters.ProductAdapter
+import com.example.e_commerceapp.ui.adapters.BannerAdapter
+import com.example.e_commerceapp.ui.adapters.CategoriesAdapter
+import com.example.e_commerceapp.ui.adapters.HomeProductAdapter
 import com.example.e_commerceapp.ui.viewmodel.ProductsViewModel
+import com.smarteist.autoimageslider.SliderView
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -25,13 +29,18 @@ import kotlinx.coroutines.withContext
 class HomeFragment : Fragment() {
 
 
-    private lateinit var grid_home: GridView
-    lateinit var productAdapter: ProductAdapter
+    lateinit var homeProductAdapter: HomeProductAdapter
+    lateinit var homeProductRecyclerView: RecyclerView
+    lateinit var bannerAdapter: BannerAdapter
+    lateinit var bannerSlider: SliderView
+    lateinit var categoriesAdapter: CategoriesAdapter
+    lateinit var categoryRecyclerView: RecyclerView
+
     private lateinit var loadingDialog: LoadingDialog
     private lateinit var viewModel: ProductsViewModel
     private lateinit var imageView: ImageView
     private lateinit var textView: TextView
-
+    private val TAG = "HomeFragment"
 
     //Connection
     private lateinit var checkInternetConnection: CheckInternetConnection
@@ -49,8 +58,6 @@ class HomeFragment : Fragment() {
         assignVariables(view)
 
 
-
-
         return view
     }
 
@@ -63,12 +70,18 @@ class HomeFragment : Fragment() {
     }
 
     private fun assignVariables(view: View) {
-        grid_home = view.findViewById(R.id.gride_home)
-        productAdapter = ProductAdapter()
+
         loadingDialog = LoadingDialog(requireActivity())
         viewModel = ViewModelProvider(requireActivity())[ProductsViewModel::class.java]
-        imageView = view.findViewById(R.id.imageView)
-        textView = view.findViewById(R.id.textView)
+        homeProductRecyclerView = view.findViewById(R.id.homeProductRecyclerView)
+        homeProductRecyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
+        bannerSlider = view.findViewById(R.id.bannerHome)
+        categoryRecyclerView = view.findViewById(R.id.categoryRecyclerView)
+        categoryRecyclerView.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+
+        //imageView = view.findViewById(R.id.imageView)
+        //textView = view.findViewById(R.id.textView)
     }
 
     private fun callNetworkConnection() {
@@ -78,32 +91,55 @@ class HomeFragment : Fragment() {
 
         checkInternetConnection.observe(requireActivity()) { isConnected ->
             if (isConnected) {
-                imageView.setImageResource(0)
-                textView.setText("")
-                getMainProducts()
+                //imageView.setImageResource(0)
+                //textView.setText("")
+                getHomeProducts()
+                getCategories()
             } else {
-                imageView.setImageResource(R.drawable.wifi_disconnected)
-                textView.setText("Network Disconnected")
-                textView.setTextColor(Color.parseColor("#F44336"))
+                //imageView.setImageResource(R.drawable.wifi_disconnected)
+                //textView.setText("Network Disconnected")
+                //textView.setTextColor(Color.parseColor("#F44336"))
             }
         }
     }
 
-    private fun getMainProducts() {
 
-        viewModel.getMainProducts()
-        loadingDialog.startLoading()
+    fun getHomeProducts() {
+
+        viewModel.getHome()
         lifecycleScope.launch(Dispatchers.IO) {
-            viewModel.liveData.collect {
+            viewModel.homeStateFlow.collect {
                 try {
-                    productAdapter.submitList(it?.products)
-                    //Execute these in main thread
+                    homeProductAdapter = HomeProductAdapter(it?.data?.products!!, requireContext())
+                    bannerAdapter = BannerAdapter(it.data.banners, requireContext())
                     withContext(Dispatchers.Main) {
-                        delay(500)
-                        grid_home.adapter = productAdapter
-                        loadingDialog.isDismiss()
+                        bannerSlider.setSliderAdapter(bannerAdapter)
+                        homeProductRecyclerView.adapter = homeProductAdapter
                     }
-                } catch (_: Exception) {}
+                } catch (e: Exception) {
+                    Log.d(TAG, "SHR: ${e.message}")
+                }
+            }
+        }
+    }
+
+
+    fun getCategories() {
+
+        viewModel.getHome()
+        lifecycleScope.launch(Dispatchers.IO) {
+
+            viewModel.categoryStateFlow.collect {
+
+                try {
+                    categoriesAdapter = CategoriesAdapter(it?.data?.data!!)
+                    withContext(Dispatchers.Main) {
+                        categoryRecyclerView.adapter = categoriesAdapter
+                        //Log.d(TAG, "SHR: ${it?.data?.data!![0].name}")
+                    }
+                } catch (e: Exception) {
+
+                }
             }
         }
     }
