@@ -4,6 +4,7 @@ import com.example.domain.model.Data
 import com.example.domain.model.Root
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.Path
 
 interface ApiService {
 
@@ -12,4 +13,7 @@ interface ApiService {
 
     @GET("categories")
     suspend fun getAllCategories(@Header("lang") lang:String):Root
+
+    @GET("categories/44")
+    suspend fun getSpecificCategory(@Header("lang") lang:String):Root
 }

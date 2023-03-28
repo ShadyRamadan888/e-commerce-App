@@ -1,6 +1,6 @@
 package com.example.e_commerceapp.di
 
-import com.example.domain.repo.HomeRepo
+import com.example.domain.repo.DefaultRepo
 import com.example.domain.usecase.GetCategoriesNames
 import com.example.domain.usecase.HomeUseCase
 import dagger.Module
@@ -13,11 +13,11 @@ import dagger.hilt.components.SingletonComponent
 object UseCaseModule {
 
     @Provides
-    fun provideHomeData(homeRepo: HomeRepo):HomeUseCase{
-        return HomeUseCase(homeRepo)
+    fun provideHomeData(defaultRepo: DefaultRepo):HomeUseCase{
+        return HomeUseCase(defaultRepo)
     }
     @Provides
-    fun provideCategories(homeRepo: HomeRepo):GetCategoriesNames{
-        return GetCategoriesNames(homeRepo)
+    fun provideCategories(defaultRepo: DefaultRepo):GetCategoriesNames{
+        return GetCategoriesNames(defaultRepo)
     }
 }

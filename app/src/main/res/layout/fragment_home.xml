@@ -8,6 +8,24 @@
     android:orientation="vertical"
     tools:context=".ui.fragment.HomeFragment">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolBar"
+        app:titleTextColor="@color/white"
+        android:layout_width="match_parent"
+        app:title=" "
+        android:layoutDirection="rtl"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Home"
+            android:textStyle="bold"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
+    </androidx.appcompat.widget.Toolbar>
+
     <ScrollView
         android:layout_width="match_parent"
         android:background="@color/appGray"

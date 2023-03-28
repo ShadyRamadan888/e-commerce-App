@@ -1,7 +1,7 @@
 package com.example.domain.usecase
 
-import com.example.domain.repo.HomeRepo
+import com.example.domain.repo.DefaultRepo
 
-class GetCategoriesNames(private val homeRepo: HomeRepo) {
-    suspend operator fun invoke() = homeRepo.getAllCategories()
+class GetCategoriesNames(private val defaultRepo: DefaultRepo) {
+    suspend operator fun invoke() = defaultRepo.getAllCategories()
 }

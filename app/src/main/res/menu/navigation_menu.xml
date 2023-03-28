@@ -5,6 +5,10 @@
             android:id="@+id/homeFragment"
             android:icon="@drawable/ic_home"
             android:title="Home" />
+        <item
+            android:id="@+id/categoryFragment"
+            android:icon="@drawable/ic_baseline_category_24"
+            android:title="Home" />
 
         <item
             android:id="@+id/Cart"
@@ -14,9 +18,6 @@
             android:id="@+id/favourites"
             android:icon="@drawable/ic_fav"
             android:title="Favorites" />
-        <item
-            android:id="@+id/profile"
-            android:icon="@drawable/ic_baseline_person_24"
-            android:title="Profile" />
+
     </group>
 </menu>

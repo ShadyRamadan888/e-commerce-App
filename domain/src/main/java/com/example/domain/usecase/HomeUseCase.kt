@@ -1,7 +1,7 @@
 package com.example.domain.usecase
 
-import com.example.domain.repo.HomeRepo
+import com.example.domain.repo.DefaultRepo
 
-class HomeUseCase(private val homeRepo: HomeRepo) {
-    suspend operator fun invoke() = homeRepo.getProducts()
+class HomeUseCase(private val defaultRepo: DefaultRepo) {
+    suspend operator fun invoke() = defaultRepo.getHomeData()
 }
