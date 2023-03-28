@@ -1,0 +1,27 @@
+-- Merging decision tree log ---
+manifest
+ADDED from F:\AndroidStudioProjects\e-commerce\ui\src\main\AndroidManifest.xml:2:1-6:12
+INJECTED from F:\AndroidStudioProjects\e-commerce\ui\src\main\AndroidManifest.xml:2:1-6:12
+INJECTED from F:\AndroidStudioProjects\e-commerce\ui\src\main\AndroidManifest.xml:2:1-6:12
+	package
+		INJECTED from F:\AndroidStudioProjects\e-commerce\ui\src\main\AndroidManifest.xml
+		ADDED from F:\AndroidStudioProjects\e-commerce\ui\src\main\AndroidManifest.xml:2:1-6:12
+		INJECTED from F:\AndroidStudioProjects\e-commerce\ui\src\main\AndroidManifest.xml
+	xmlns:tools
+		ADDED from F:\AndroidStudioProjects\e-commerce\ui\src\main\AndroidManifest.xml:3:5-51
+	xmlns:android
+		ADDED from F:\AndroidStudioProjects\e-commerce\ui\src\main\AndroidManifest.xml:2:11-69
+uses-sdk
+INJECTED from F:\AndroidStudioProjects\e-commerce\ui\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from F:\AndroidStudioProjects\e-commerce\ui\src\main\AndroidManifest.xml
+INJECTED from F:\AndroidStudioProjects\e-commerce\ui\src\main\AndroidManifest.xml
+INJECTED from F:\AndroidStudioProjects\e-commerce\ui\src\main\AndroidManifest.xml
+INJECTED from F:\AndroidStudioProjects\e-commerce\ui\src\main\AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from F:\AndroidStudioProjects\e-commerce\ui\src\main\AndroidManifest.xml
+		ADDED from F:\AndroidStudioProjects\e-commerce\ui\src\main\AndroidManifest.xml
+		INJECTED from F:\AndroidStudioProjects\e-commerce\ui\src\main\AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from F:\AndroidStudioProjects\e-commerce\ui\src\main\AndroidManifest.xml
+		ADDED from F:\AndroidStudioProjects\e-commerce\ui\src\main\AndroidManifest.xml
+		INJECTED from F:\AndroidStudioProjects\e-commerce\ui\src\main\AndroidManifest.xml
