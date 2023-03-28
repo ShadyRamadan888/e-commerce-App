@@ -10,6 +10,7 @@
 
     <ScrollView
         android:layout_width="match_parent"
+        android:background="@color/appGray"
         android:layout_height="wrap_content">
 
         <LinearLayout
@@ -18,6 +19,53 @@
             android:background="#D7DDDD"
             android:orientation="vertical">
 
+
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/shimmerFrameLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/appGray"
+                android:layout_gravity="center"
+                android:orientation="vertical">
+
+                <!-- Adding 15 rows of placeholders -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:background="@color/appGray"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <include layout="@layout/shimmer_placeholder_layout" />
+
+                    <include layout="@layout/shimmer_placeholder_layout" />
+
+                    <include layout="@layout/shimmer_placeholder_layout" />
+
+                    <include layout="@layout/shimmer_placeholder_layout" />
+
+                    <include layout="@layout/shimmer_placeholder_layout" />
+
+                    <include layout="@layout/shimmer_placeholder_layout" />
+
+                    <include layout="@layout/shimmer_placeholder_layout" />
+
+                    <include layout="@layout/shimmer_placeholder_layout" />
+
+                    <include layout="@layout/shimmer_placeholder_layout" />
+
+                    <include layout="@layout/shimmer_placeholder_layout" />
+
+                    <include layout="@layout/shimmer_placeholder_layout" />
+
+                    <include layout="@layout/shimmer_placeholder_layout" />
+
+                    <include layout="@layout/shimmer_placeholder_layout" />
+
+                    <include layout="@layout/shimmer_placeholder_layout" />
+
+                    <include layout="@layout/shimmer_placeholder_layout" />
+                </LinearLayout>
+            </com.facebook.shimmer.ShimmerFrameLayout>
 
             <com.smarteist.autoimageslider.SliderView
                 android:id="@+id/bannerHome"
@@ -37,18 +85,23 @@
                 app:sliderIndicatorSelectedColor="@color/white"
                 app:sliderIndicatorUnselectedColor="@color/white"
                 app:sliderScrollTimeInSec="2"
+                android:visibility="gone"
                 app:sliderStartAutoCycle="true" />
+
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/categoryRecyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:visibility="gone"
+                android:layout_height="wrap_content" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/homeProductRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:visibility="gone"
                 android:padding="5dp" />
+
 
         </LinearLayout>
     </ScrollView>

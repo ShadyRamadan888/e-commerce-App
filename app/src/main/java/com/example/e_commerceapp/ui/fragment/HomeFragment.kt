@@ -20,8 +20,10 @@ import com.example.e_commerceapp.ui.adapters.BannerAdapter
 import com.example.e_commerceapp.ui.adapters.CategoriesAdapter
 import com.example.e_commerceapp.ui.adapters.HomeProductAdapter
 import com.example.e_commerceapp.ui.viewmodel.ProductsViewModel
+import com.facebook.shimmer.ShimmerFrameLayout
 import com.smarteist.autoimageslider.SliderView
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -35,6 +37,7 @@ class HomeFragment : Fragment() {
     lateinit var bannerSlider: SliderView
     lateinit var categoriesAdapter: CategoriesAdapter
     lateinit var categoryRecyclerView: RecyclerView
+    lateinit var shimmerFrameLayout: ShimmerFrameLayout
 
     private lateinit var loadingDialog: LoadingDialog
     private lateinit var viewModel: ProductsViewModel
@@ -80,6 +83,11 @@ class HomeFragment : Fragment() {
         categoryRecyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
 
+
+        shimmerFrameLayout = view.findViewById(R.id.shimmerFrameLayout)
+
+
+
         //imageView = view.findViewById(R.id.imageView)
         //textView = view.findViewById(R.id.textView)
     }
@@ -113,6 +121,10 @@ class HomeFragment : Fragment() {
                     homeProductAdapter = HomeProductAdapter(it?.data?.products!!, requireContext())
                     bannerAdapter = BannerAdapter(it.data.banners, requireContext())
                     withContext(Dispatchers.Main) {
+                        shimmerFrameLayout.stopShimmer()
+                        shimmerFrameLayout.visibility = View.GONE
+                        bannerSlider.visibility = View.VISIBLE
+                        homeProductRecyclerView.visibility = View.VISIBLE
                         bannerSlider.setSliderAdapter(bannerAdapter)
                         homeProductRecyclerView.adapter = homeProductAdapter
                     }
@@ -135,6 +147,7 @@ class HomeFragment : Fragment() {
                     categoriesAdapter = CategoriesAdapter(it?.data?.data!!)
                     withContext(Dispatchers.Main) {
                         categoryRecyclerView.adapter = categoriesAdapter
+                        categoryRecyclerView.visibility = View.VISIBLE
                         //Log.d(TAG, "SHR: ${it?.data?.data!![0].name}")
                     }
                 } catch (e: Exception) {
@@ -144,5 +157,13 @@ class HomeFragment : Fragment() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        shimmerFrameLayout.startShimmer()
+    }
 
+    override fun onPause() {
+        shimmerFrameLayout.stopShimmer()
+        super.onPause()
+    }
 }

@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.domain.model.Banner
 import com.example.e_commerceapp.R
+import com.facebook.shimmer.ShimmerFrameLayout
 import com.smarteist.autoimageslider.SliderViewAdapter
 
 class BannerAdapter(var bannerList:List<Banner>,var context: Context): SliderViewAdapter<BannerAdapter.SliderViewHolder>() {
