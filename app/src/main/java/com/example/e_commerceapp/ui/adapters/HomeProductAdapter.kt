@@ -14,11 +14,10 @@ import com.example.domain.model.Product
 import com.example.e_commerceapp.R
 import kotlin.math.roundToInt
 
-class HomeProductAdapter(var homeList: List<Product>,var context: Context) :
-
-
+class HomeProductAdapter(var context: Context) :
     RecyclerView.Adapter<HomeProductAdapter.ViewHolder>() {
 
+    private var homeList: List<Product> = listOf()
     private val TAG = "DummyProductAdapter"
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -40,5 +39,9 @@ class HomeProductAdapter(var homeList: List<Product>,var context: Context) :
 
     override fun getItemCount(): Int {
         return homeList.size
+    }
+
+    fun updateData(homeList: List<Product>){
+        this.homeList = homeList
     }
 }

@@ -1,7 +1,7 @@
 package com.example.e_commerceapp.di
 
 import com.example.domain.repo.DefaultRepo
-import com.example.domain.usecase.GetCategoriesNames
+import com.example.domain.usecase.CategoriesUseCase
 import com.example.domain.usecase.HomeUseCase
 import dagger.Module
 import dagger.Provides
@@ -17,7 +17,7 @@ object UseCaseModule {
         return HomeUseCase(defaultRepo)
     }
     @Provides
-    fun provideCategories(defaultRepo: DefaultRepo):GetCategoriesNames{
-        return GetCategoriesNames(defaultRepo)
+    fun provideCategories(defaultRepo: DefaultRepo):CategoriesUseCase{
+        return CategoriesUseCase(defaultRepo)
     }
 }

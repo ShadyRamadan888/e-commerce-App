@@ -1,9 +1,10 @@
 package com.example.domain.repo
 
 import com.example.domain.model.Root
+import kotlinx.coroutines.flow.Flow
 
 interface DefaultRepo {
 
-    suspend fun getHomeData(): Root
+    suspend fun getHomeData(): Flow<Root>
     suspend fun getAllCategories(): Root
 }

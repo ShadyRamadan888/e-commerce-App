@@ -1,5 +1,8 @@
 package com.example.e_commerceapp.ui.fragment
 
+import android.app.AlertDialog
+import android.app.Dialog
+import android.app.ProgressDialog
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
@@ -13,6 +16,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
@@ -27,29 +31,33 @@ import com.example.e_commerceapp.ui.adapters.HomeProductAdapter
 import com.example.e_commerceapp.ui.viewmodel.ProductsViewModel
 import com.example.e_commerceapp.utils.FacebookShimmerFactory
 import com.facebook.shimmer.ShimmerFrameLayout
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.smarteist.autoimageslider.SliderView
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flowOn
 
 
 class HomeFragment : Fragment() {
 
 
-    lateinit var homeProductAdapter: HomeProductAdapter
-    lateinit var homeProductRecyclerView: RecyclerView
+    private lateinit var homeProductAdapter: HomeProductAdapter
+    private lateinit var homeProductRecyclerView: RecyclerView
     lateinit var bannerAdapter: BannerAdapter
-    lateinit var bannerSlider: SliderView
-    lateinit var categoriesAdapter: CategoriesAdapter
+    private lateinit var bannerSlider: SliderView
     lateinit var categoryRecyclerView: RecyclerView
     lateinit var shimmerFrameLayout: ShimmerFrameLayout
     lateinit var facebookShimmerFactory: FacebookShimmerFactory
     lateinit var toolbar: androidx.appcompat.widget.Toolbar
-
+    private val homeDataScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
     private lateinit var loadingDialog: LoadingDialog
     private lateinit var viewModel: ProductsViewModel
     private lateinit var imageView: ImageView
     private lateinit var textView: TextView
+    private lateinit var builder: AlertDialog.Builder
+
+    lateinit var dialog: AlertDialog
     private val TAG = "HomeFragment"
 
     //Connection
@@ -66,6 +74,9 @@ class HomeFragment : Fragment() {
 
 
         assignVariables(view)
+        //alertDialog.create()
+        //alertDialog.setTitle("Connection")
+
         setUpToolBar()
 
 
@@ -93,6 +104,11 @@ class HomeFragment : Fragment() {
         shimmerFrameLayout = view.findViewById(R.id.shimmerFrameLayout)
         facebookShimmerFactory = FacebookShimmerFactory(shimmerFrameLayout)
         toolbar = view.findViewById<Toolbar>(R.id.toolBar) as androidx.appcompat.widget.Toolbar
+        homeProductAdapter = HomeProductAdapter(requireContext())
+        bannerAdapter = BannerAdapter(requireContext())
+        builder = AlertDialog.Builder(requireContext(),R.style.MyDialogTheme)
+        alertDialog()
+        dialog = builder.create()
 
         //imageView = view.findViewById(R.id.imageView)
         //textView = view.findViewById(R.id.textView)
@@ -108,10 +124,12 @@ class HomeFragment : Fragment() {
                 //imageView.setImageResource(0)
                 //textView.setText("")
                 getHomeData()
+                dialog.dismiss()
                 //getCategories()
             } else {
                 //imageView.setImageResource(R.drawable.wifi_disconnected)
                 //textView.setText("Network Disconnected")
+                dialog.show()
                 //textView.setTextColor(Color.parseColor("#F44336"))
             }
         }
@@ -128,29 +146,33 @@ class HomeFragment : Fragment() {
     }
 
 
-    fun getHomeData() {
-
+    private fun getHomeData() {
         viewModel.getHome()
-        lifecycleScope.launch(Dispatchers.IO) {
-            viewModel.homeStateFlow.collect {
-                try {
-                    homeProductAdapter = HomeProductAdapter(it?.data?.products!!, requireContext())
-                    bannerAdapter = BannerAdapter(it.data.banners, requireContext())
-                    withContext(Dispatchers.Main) {
-                        facebookShimmerFactory.run { stopShimmer() }
-                        bannerSlider.visibility = View.VISIBLE
-                        homeProductRecyclerView.visibility = View.VISIBLE
-                        bannerSlider.setSliderAdapter(bannerAdapter)
-                        homeProductRecyclerView.adapter = homeProductAdapter
-                    }
-                } catch (e: Exception) {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.dataStateFlow
+                .catch { e ->
                     Log.d(TAG, "SHR: ${e.message}")
                 }
-            }
+                .flowOn(Dispatchers.IO)
+                .collect { dataState ->
+                    dataState.home?.let { homeState ->
+                        try {
+                            homeState.collect { home ->
+                                homeProductAdapter.updateData(home.data.products)
+                                bannerAdapter.updateData(home.data.banners)
+                            }
+                            //to check if the fragment is in the started state before updating the UI
+                            if (viewLifecycleOwner.lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
+                                updateUI()
+                                facebookShimmerFactory.stopShimmer()
+                            }
+                        } catch (e: CancellationException) {
+                            Log.d(TAG, "SHR: ${e.message}")
+                        }
+                    }
+                }
         }
     }
-
-
 //    fun getCategories() {
 //
 //        viewModel.getHome()
@@ -172,6 +194,23 @@ class HomeFragment : Fragment() {
 //        }
 //    }
 
+    private fun updateUI() {
+        homeProductRecyclerView.visibility = View.VISIBLE
+        homeProductRecyclerView.adapter = homeProductAdapter
+        bannerSlider.visibility = View.VISIBLE
+        bannerSlider.setSliderAdapter(bannerAdapter)
+    }
+
+    private fun alertDialog() {
+
+        builder.setTitle("No Internet connection")
+        //builder.setMessage("Message of the dialog")
+
+        builder.setNegativeButton("Dismiss") { dialog, which ->
+            // Do something when the Cancel button is clicked
+            dialog.cancel()
+        }
+    }
 
     override fun onResume() {
         super.onResume()
@@ -181,5 +220,10 @@ class HomeFragment : Fragment() {
     override fun onPause() {
         shimmerFrameLayout.stopShimmer()
         super.onPause()
+    }
+
+    override fun onDestroyView() {
+        homeDataScope.cancel()
+        super.onDestroyView()
     }
 }
