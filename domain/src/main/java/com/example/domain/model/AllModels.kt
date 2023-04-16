@@ -1,6 +1,5 @@
 package com.example.domain.model
 
-import com.google.gson.annotations.SerializedName
 import java.util.*
 
 data class Banner(
@@ -19,7 +18,7 @@ data class Category(
 data class Data(
     var banners: List<Banner>,
     var products: List<Product>,
-    var data:List<Category>,
+    var data: List<Category>,
     var ad: String
 )
 
@@ -34,6 +33,10 @@ data class Product(
     var images: List<String>,
     var in_favorites: Boolean,
     var in_cart: Boolean
+)
+
+data class ProductRoot(
+    var data: Product
 )
 
 data class Root(

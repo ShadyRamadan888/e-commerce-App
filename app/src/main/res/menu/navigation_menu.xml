@@ -8,7 +8,7 @@
         <item
             android:id="@+id/categoryFragment"
             android:icon="@drawable/ic_baseline_category_24"
-            android:title="Home" />
+            android:title="Categories" />
 
         <item
             android:id="@+id/Cart"

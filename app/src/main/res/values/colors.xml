@@ -12,5 +12,5 @@
     <color name="secondColor">#114C47</color>
     <color name="TextInputLayoutColor">#B4BFBF</color>
     <color name="mtrl_textinput_default_box_stroke_color">#114C47</color>
-    <color name="appGray">#D7DDDD</color>
+    <color name="appGray">#E9EDED</color>
 </resources>

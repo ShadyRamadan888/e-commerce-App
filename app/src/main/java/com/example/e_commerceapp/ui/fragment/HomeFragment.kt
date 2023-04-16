@@ -1,11 +1,8 @@
 package com.example.e_commerceapp.ui.fragment
 
 import android.app.AlertDialog
-import android.app.Dialog
-import android.app.ProgressDialog
 import android.os.Bundle
 import android.util.Log
-import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -20,22 +17,18 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.e_commerceapp.utils.CheckInternetConnection
 import com.example.e_commerceapp.R
 import com.example.e_commerceapp.utils.LoadingDialog
 import com.example.e_commerceapp.ui.adapters.BannerAdapter
-import com.example.e_commerceapp.ui.adapters.CategoriesAdapter
 import com.example.e_commerceapp.ui.adapters.HomeProductAdapter
 import com.example.e_commerceapp.ui.viewmodel.ProductsViewModel
 import com.example.e_commerceapp.utils.FacebookShimmerFactory
 import com.facebook.shimmer.ShimmerFrameLayout
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.smarteist.autoimageslider.SliderView
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
 
 
@@ -46,7 +39,6 @@ class HomeFragment : Fragment() {
     private lateinit var homeProductRecyclerView: RecyclerView
     lateinit var bannerAdapter: BannerAdapter
     private lateinit var bannerSlider: SliderView
-    lateinit var categoryRecyclerView: RecyclerView
     lateinit var shimmerFrameLayout: ShimmerFrameLayout
     lateinit var facebookShimmerFactory: FacebookShimmerFactory
     lateinit var toolbar: androidx.appcompat.widget.Toolbar
@@ -78,7 +70,8 @@ class HomeFragment : Fragment() {
         //alertDialog.setTitle("Connection")
 
         setUpToolBar()
-
+        getHomeData()
+        //callNetworkConnection()
 
         return view
     }
@@ -86,8 +79,6 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        callNetworkConnection()
 
     }
 
@@ -97,16 +88,18 @@ class HomeFragment : Fragment() {
         viewModel = ViewModelProvider(requireActivity())[ProductsViewModel::class.java]
         homeProductRecyclerView = view.findViewById(R.id.homeProductRecyclerView)
         homeProductRecyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
+        homeProductRecyclerView.setHasFixedSize(true)
         bannerSlider = view.findViewById(R.id.bannerHome)
-        categoryRecyclerView = view.findViewById(R.id.categoryRecyclerView)
-        categoryRecyclerView.layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         shimmerFrameLayout = view.findViewById(R.id.shimmerFrameLayout)
         facebookShimmerFactory = FacebookShimmerFactory(shimmerFrameLayout)
         toolbar = view.findViewById<Toolbar>(R.id.toolBar) as androidx.appcompat.widget.Toolbar
-        homeProductAdapter = HomeProductAdapter(requireContext())
+
+        if (!::homeProductAdapter.isInitialized) {
+            homeProductAdapter = HomeProductAdapter(requireContext())
+        }
+
         bannerAdapter = BannerAdapter(requireContext())
-        builder = AlertDialog.Builder(requireContext(),R.style.MyDialogTheme)
+        builder = AlertDialog.Builder(requireContext(), R.style.MyDialogTheme)
         alertDialog()
         dialog = builder.create()
 
@@ -123,8 +116,9 @@ class HomeFragment : Fragment() {
             if (isConnected) {
                 //imageView.setImageResource(0)
                 //textView.setText("")
-                getHomeData()
-                dialog.dismiss()
+                //getHomeData()
+                //getHomeData()
+                //dialog.dismiss()
                 //getCategories()
             } else {
                 //imageView.setImageResource(R.drawable.wifi_disconnected)
@@ -135,7 +129,7 @@ class HomeFragment : Fragment() {
         }
     }
 
-    fun setUpToolBar() {
+    private fun setUpToolBar() {
         (requireActivity() as AppCompatActivity).setSupportActionBar(toolbar)
         toolbar.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.app))
         toolbar.setNavigationIcon(R.drawable.ic_baseline_search_24)
@@ -145,6 +139,16 @@ class HomeFragment : Fragment() {
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+
+        //Check if the recyclerView has data or not
+        //To prevent reloading data (the user will miss the product he stop on)
+        if (homeProductAdapter.itemCount == 0) {
+            getHomeData()
+        }
+
+    }
 
     private fun getHomeData() {
         viewModel.getHome()
@@ -173,26 +177,6 @@ class HomeFragment : Fragment() {
                 }
         }
     }
-//    fun getCategories() {
-//
-//        viewModel.getHome()
-//        lifecycleScope.launch(Dispatchers.IO) {
-//
-//            viewModel.categoryStateFlow.collect {
-//
-//                try {
-//                    categoriesAdapter = CategoriesAdapter(it?.data?.data!!)
-//                    withContext(Dispatchers.Main) {
-//                        categoryRecyclerView.adapter = categoriesAdapter
-//                        categoryRecyclerView.visibility = View.VISIBLE
-//                        //Log.d(TAG, "SHR: ${it?.data?.data!![0].name}")
-//                    }
-//                } catch (e: Exception) {
-//
-//                }
-//            }
-//        }
-//    }
 
     private fun updateUI() {
         homeProductRecyclerView.visibility = View.VISIBLE
@@ -226,4 +210,5 @@ class HomeFragment : Fragment() {
         homeDataScope.cancel()
         super.onDestroyView()
     }
+
 }

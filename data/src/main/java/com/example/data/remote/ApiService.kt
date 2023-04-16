@@ -1,6 +1,7 @@
 package com.example.data.remote
 
 import com.example.domain.model.Data
+import com.example.domain.model.ProductRoot
 import com.example.domain.model.Root
 import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
@@ -18,4 +19,7 @@ interface ApiService {
 
     @GET("categories/44")
     suspend fun getSpecificCategory(@Header("lang") lang: String): Root
+
+    @GET("products/{id}")
+    suspend fun getProductById(@Header("lang") lang: String, @Path("id") id: Int): ProductRoot
 }

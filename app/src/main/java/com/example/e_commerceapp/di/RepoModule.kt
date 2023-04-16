@@ -13,7 +13,6 @@ import dagger.hilt.components.SingletonComponent
 @InstallIn(SingletonComponent::class)
 object RepoModule {
 
-
     @Provides
     fun provideHomeRepo(apiService: ApiService):DefaultRepo{
         return DefaultRepoImpl(apiService)

@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/appGray"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.fragment.CategoryFragment">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/catToolBar"
+        app:titleTextColor="@color/white"
+        android:layout_width="match_parent"
+        app:title=" "
+        android:layoutDirection="rtl"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Categories"
+            android:textStyle="bold"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
+    </androidx.appcompat.widget.Toolbar>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="20dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal">
+            <androidx.cardview.widget.CardView
+                style="@style/RippleDesign"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/white"
+                app:cardCornerRadius="20dp">
+                <com.balysv.materialripple.MaterialRippleLayout
+                    android:id="@+id/book_an_appointment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    style="@style/RippleDesign">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:orientation="vertical">
+                        <ImageView
+                            android:id="@+id/devicesCategoryImage"
+                            android:layout_width="match_parent"
+                            android:layout_height="150dp"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/wifi_connect"/>
+                        <TextView
+                            android:id="@+id/devicesCategoryText"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:text="Electronic Devices"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            android:padding="1dp"
+                            android:textSize="15sp"
+                            android:gravity="center"
+                            android:layout_weight="1"/>
+
+
+                    </LinearLayout>
+
+                </com.balysv.materialripple.MaterialRippleLayout>
+
+
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal">
+            <androidx.cardview.widget.CardView
+                style="@style/RippleDesign"
+                android:layout_width="0dp"
+                android:layout_marginRight="10dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:backgroundTint="@color/white"
+                app:cardCornerRadius="20dp">
+                <com.balysv.materialripple.MaterialRippleLayout
+                    android:id="@+id/bloodTest"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    style="@style/RippleDesign">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:orientation="vertical">
+                        <ImageView
+                            android:id="@+id/coronaCategoryImage"
+                            android:layout_width="120dp"
+                            android:layout_height="150dp"
+                            android:layout_gravity="center"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/wifi_connect"/>
+                        <TextView
+                            android:id="@+id/coronaCategoryText"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:text="Prevent Corona"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            android:textSize="15dp"
+                            android:gravity="center"
+                            android:padding="1dp"
+                            android:layout_weight="1"/>
+
+                    </LinearLayout>
+
+                </com.balysv.materialripple.MaterialRippleLayout>
+
+
+            </androidx.cardview.widget.CardView>
+            <androidx.cardview.widget.CardView
+                style="@style/RippleDesign"
+                android:layout_width="0dp"
+                android:layout_marginLeft="10dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:backgroundTint="@color/white"
+                app:cardCornerRadius="20dp">
+                <com.balysv.materialripple.MaterialRippleLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/surgeriesBox"
+                    style="@style/RippleDesign">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:orientation="vertical">
+                        <ImageView
+                            android:id="@+id/sportsCategoryImage"
+                            android:layout_width="120dp"
+                            android:layout_height="150dp"
+                            android:layout_gravity="center"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/wifi_connect"/>
+                        <TextView
+                            android:id="@+id/sportsCategoryText"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:text="Sports"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            android:padding="1dp"
+                            android:textSize="15dp"
+                            android:gravity="center"
+                            android:layout_weight="1"/>
+
+                    </LinearLayout>
+                </com.balysv.materialripple.MaterialRippleLayout>
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="20dp"
+
+            android:orientation="horizontal">
+            <androidx.cardview.widget.CardView
+                style="@style/RippleDesign"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginRight="10dp"
+                android:backgroundTint="@color/white"
+                app:cardCornerRadius="20dp">
+                <com.balysv.materialripple.MaterialRippleLayout
+                    android:id="@+id/pregnancyDiary"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    style="@style/RippleDesign">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:orientation="vertical">
+                        <ImageView
+                            android:id="@+id/lightingCategoryImage"
+                            android:layout_width="120dp"
+                            android:layout_height="150dp"
+                            android:scaleType="centerCrop"
+                            android:layout_gravity="center"
+                            android:src="@drawable/wifi_connect"/>
+                        <TextView
+                            android:id="@+id/lightingCategoryText"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:text="Lighting"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            android:padding="1dp"
+                            android:textSize="15dp"
+                            android:gravity="center"
+                            android:layout_weight="1"/>
+
+                    </LinearLayout>
+
+                </com.balysv.materialripple.MaterialRippleLayout>
+
+
+            </androidx.cardview.widget.CardView>
+            <androidx.cardview.widget.CardView
+                style="@style/RippleDesign"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginLeft="10dp"
+                android:backgroundTint="@color/white"
+                app:cardCornerRadius="20dp">
+                <com.balysv.materialripple.MaterialRippleLayout
+                    android:id="@+id/pregnancyDepression"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    style="@style/RippleDesign">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:orientation="vertical">
+                        <ImageView
+                            android:id="@+id/clothesCategoryImage"
+                            android:layout_width="120dp"
+                            android:layout_height="150dp"
+                            android:layout_gravity="center"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/wifi_connect"/>
+                        <TextView
+                            android:id="@+id/clothesCategoryText"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:text="Clothes"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            android:padding="1dp"
+                            android:textSize="15dp"
+                            android:gravity="center"
+                            android:layout_weight="1"/>
+                    </LinearLayout>
+                </com.balysv.materialripple.MaterialRippleLayout>
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
+</FrameLayout>

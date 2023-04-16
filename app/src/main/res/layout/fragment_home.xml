@@ -26,10 +26,7 @@
             android:textSize="18sp" />
     </androidx.appcompat.widget.Toolbar>
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:background="@color/appGray"
-        android:layout_height="wrap_content">
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -107,11 +104,6 @@
                 app:sliderStartAutoCycle="true" />
 
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/categoryRecyclerView"
-                android:layout_width="match_parent"
-                android:visibility="gone"
-                android:layout_height="wrap_content" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/homeProductRecyclerView"
@@ -119,10 +111,7 @@
                 android:layout_height="match_parent"
                 android:visibility="gone"
                 android:padding="5dp" />
-
-
         </LinearLayout>
-    </ScrollView>
 
 
     <!--     <LinearLayout-->

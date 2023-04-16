@@ -103,8 +103,6 @@ dependencies {
     implementation project(path: ':data')
     implementation project(path: ':domain')
 
-    //Translator
-    implementation 'com.google.cloud:google-cloud-translate:2.3.0'
 
     //Slider
     implementation 'com.github.smarteist:autoimageslider:1.4.0'
