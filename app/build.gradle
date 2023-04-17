@@ -61,8 +61,6 @@ dependencies {
     //Material ripple
     implementation 'com.balysv:material-ripple:1.0.2'
     implementation "androidx.cardview:cardview:1.0.0"
-    //For Phone Number Key
-    implementation 'com.github.joielechong:countrycodepicker:2.4.2'
     //gif
     implementation 'de.hdodenhof:circleimageview:3.1.0'
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.19'

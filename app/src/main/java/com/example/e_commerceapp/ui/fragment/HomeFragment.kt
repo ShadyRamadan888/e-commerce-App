@@ -100,7 +100,6 @@ class HomeFragment : Fragment() {
 
         bannerAdapter = BannerAdapter(requireContext())
         builder = AlertDialog.Builder(requireContext(), R.style.MyDialogTheme)
-        alertDialog()
         dialog = builder.create()
 
         //imageView = view.findViewById(R.id.imageView)
@@ -183,17 +182,6 @@ class HomeFragment : Fragment() {
         homeProductRecyclerView.adapter = homeProductAdapter
         bannerSlider.visibility = View.VISIBLE
         bannerSlider.setSliderAdapter(bannerAdapter)
-    }
-
-    private fun alertDialog() {
-
-        builder.setTitle("No Internet connection")
-        //builder.setMessage("Message of the dialog")
-
-        builder.setNegativeButton("Dismiss") { dialog, which ->
-            // Do something when the Cancel button is clicked
-            dialog.cancel()
-        }
     }
 
     override fun onResume() {

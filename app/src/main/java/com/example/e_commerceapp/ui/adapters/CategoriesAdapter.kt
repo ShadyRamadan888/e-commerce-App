@@ -17,15 +17,11 @@ class CategoriesAdapter(var categoryList: List<Category>) :
 
     var pos: Int = 0
 
-    companion object{
-        var categoryId:Int = 0
+    companion object {
+        var categoryId: Int = 0
     }
 
-    class ViewHolder(view: View, var catModel: Category? = null) : RecyclerView.ViewHolder(view) {
-
-        init {
-
-        }
+    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         var categoryName: TextView = view.findViewById(R.id.categoryButton)
     }
@@ -54,21 +50,6 @@ class CategoriesAdapter(var categoryList: List<Category>) :
             holder.categoryName.setTextColor(Color.parseColor("#4A9EC5"))
             holder.categoryName.setBackgroundResource(R.drawable.category_background)
         }
-
-
-//        when (clicked) {
-//            false -> {
-//                holder.categoryName.setTextColor(Color.parseColor("#4A9EC5"))
-//                holder.categoryName.setBackgroundResource(R.drawable.category_background)
-//                clicked = true
-//            }
-//            true -> {
-//                holder.categoryName.setTextColor(Color.parseColor("#FFFFFF"))
-//                holder.categoryName.setBackgroundResource(R.drawable.category_click_background)
-//                clicked = false
-//            }
-//            else -> {}
-//        }
     }
 
     override fun getItemCount(): Int {

@@ -12,12 +12,13 @@ import com.example.e_commerceapp.R
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.smarteist.autoimageslider.SliderViewAdapter
 
-class BannerAdapter(var context: Context): SliderViewAdapter<BannerAdapter.SliderViewHolder>() {
+class BannerAdapter(var context: Context) : SliderViewAdapter<BannerAdapter.SliderViewHolder>() {
 
-    private lateinit var bannerList:List<Banner>
-    open class SliderViewHolder(view:View): ViewHolder(view) {
+    private lateinit var bannerList: List<Banner>
 
-        var bannerImage:ImageView = view.findViewById(R.id.imageItem)
+    open class SliderViewHolder(view: View) : ViewHolder(view) {
+
+        var bannerImage: ImageView = view.findViewById(R.id.imageItem)
 
     }
 
@@ -26,7 +27,8 @@ class BannerAdapter(var context: Context): SliderViewAdapter<BannerAdapter.Slide
     }
 
     override fun onCreateViewHolder(parent: ViewGroup?): SliderViewHolder {
-        val view = LayoutInflater.from(parent!!.context).inflate(R.layout.banner_item, parent, false)
+        val view =
+            LayoutInflater.from(parent!!.context).inflate(R.layout.banner_item, parent, false)
 
         return SliderViewHolder(view)
     }
@@ -35,7 +37,7 @@ class BannerAdapter(var context: Context): SliderViewAdapter<BannerAdapter.Slide
         Glide.with(context).load(bannerList[position].image).into(viewHolder!!.bannerImage)
     }
 
-    fun updateData(bannerList:List<Banner>){
+    fun updateData(bannerList: List<Banner>) {
         this.bannerList = bannerList
     }
 

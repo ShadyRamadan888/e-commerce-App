@@ -19,7 +19,6 @@ import kotlinx.coroutines.*
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-
     private lateinit var navController: NavController
     private lateinit var bottomNavigationView: BottomNavigationView
     private lateinit var navHostFragment: NavHostFragment
@@ -28,17 +27,11 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
         //nav
         navHostFragment =
             supportFragmentManager.findFragmentById(com.example.e_commerceapp.R.id.nav_host_fragment) as NavHostFragment
-
-
         bottomNavigationView = findViewById(com.example.e_commerceapp.R.id.bottomNavigationView)
-
         navController = navHostFragment.navController
         bottomNavigationView.setupWithNavController(navController)
     }
-
-
 }

@@ -1,6 +1,7 @@
 package com.example.e_commerceapp.ui.fragment
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -17,6 +18,7 @@ import com.example.e_commerceapp.ui.viewmodel.ProductsViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlin.math.log
 
 
 class CategoryFragment : Fragment() {
@@ -29,11 +31,12 @@ class CategoryFragment : Fragment() {
     private lateinit var lightingImg: ImageView
     private lateinit var viewModel: ProductsViewModel
     lateinit var toolbar: androidx.appcompat.widget.Toolbar
+    private val TAG = "CategoryFragment"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         val view: View = inflater.inflate(R.layout.fragment_category, container, false)
 
@@ -45,7 +48,7 @@ class CategoryFragment : Fragment() {
         return view
     }
 
-    fun getCategories() {
+    private fun getCategories() {
 
         viewModel.getHome()
         lifecycleScope.launch(Dispatchers.IO) {
@@ -66,13 +69,13 @@ class CategoryFragment : Fragment() {
 
                     }
                 } catch (e: Exception) {
-
+                    Log.d(TAG, "getCategories: ${e.message}")
                 }
             }
         }
     }
 
-    fun assignVariables(view: View) {
+    private fun assignVariables(view: View) {
         toolbar = view.findViewById<Toolbar>(R.id.catToolBar) as androidx.appcompat.widget.Toolbar
         viewModel = ViewModelProvider(requireActivity())[ProductsViewModel::class.java]
         clothesImg = view.findViewById(R.id.clothesCategoryImage)
@@ -81,6 +84,7 @@ class CategoryFragment : Fragment() {
         lightingImg = view.findViewById(R.id.lightingCategoryImage)
         devicesImg = view.findViewById(R.id.devicesCategoryImage)
     }
+
     fun setUpToolBar() {
         (requireActivity() as AppCompatActivity).setSupportActionBar(toolbar)
         toolbar.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.app))
