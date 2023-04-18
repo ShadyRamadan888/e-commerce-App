@@ -1,6 +1,7 @@
 package com.example.e_commerceapp.ui.activties
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
@@ -8,10 +9,16 @@ import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.*
 import com.example.e_commerceapp.R
 import com.example.e_commerceapp.ui.adapters.ImgDetailsAdapter
 import com.example.e_commerceapp.ui.viewmodel.ProductsViewModel
+import com.example.e_commerceapp.utils.FacebookShimmerFactory
+import com.example.ui.activties.MainActivity
+import com.facebook.shimmer.ShimmerFrameLayout
 import com.smarteist.autoimageslider.SliderView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
@@ -28,8 +35,11 @@ class ProductDetailsActivity : AppCompatActivity() {
     private lateinit var productPrice: TextView
     private lateinit var productDesc: TextView
     private lateinit var loadMore: TextView
+    lateinit var toolbar: androidx.appcompat.widget.Toolbar
     private lateinit var imgDetailsAdapter: ImgDetailsAdapter
     private lateinit var imgSliderView: SliderView
+    lateinit var facebookShimmerFactory: FacebookShimmerFactory
+    lateinit var shimmerFrameLayout: ShimmerFrameLayout
 
     lateinit var myViewModel: ProductsViewModel
 
@@ -38,6 +48,8 @@ class ProductDetailsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_product_details)
 
         assignVariables()
+        setUpToolBar()
+
         myViewModel = ViewModelProvider(this)[ProductsViewModel::class.java]
         productId = intent.getIntExtra("productId", 0)
         loadMoreAndLessFactory()
@@ -59,6 +71,7 @@ class ProductDetailsActivity : AppCompatActivity() {
                             productName.text = data.data.name
                             productPrice.text = "$${data.data.price.roundToInt()}"
                             productDesc.text = data.data.description
+                            facebookShimmerFactory.stopShimmer()
                         } catch (e: Exception) {
                             Log.d(TAG, "SHR: ${e.message}")
                         }
@@ -71,6 +84,9 @@ class ProductDetailsActivity : AppCompatActivity() {
     }
 
     private fun assignVariables() {
+        toolbar = findViewById(R.id.catToolBar)
+        shimmerFrameLayout = findViewById(R.id.shimmerFrameLayout)
+        facebookShimmerFactory = FacebookShimmerFactory(shimmerFrameLayout)
         imgSliderView = findViewById(R.id.img_details_slider)
         productName = findViewById(R.id.product_name)
         productPrice = findViewById(R.id.product_price)
@@ -94,6 +110,21 @@ class ProductDetailsActivity : AppCompatActivity() {
                 clicked = true
                 //loadMore.visibility = View.GONE
             }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        facebookShimmerFactory.startShimmer()
+    }
+
+    private fun setUpToolBar() {
+        (this as AppCompatActivity).setSupportActionBar(toolbar)
+        toolbar.setBackgroundColor(ContextCompat.getColor(this, R.color.app))
+        toolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24)
+        toolbar.setNavigationOnClickListener {
+            // Handle click on the icon
+            onBackPressed()
         }
     }
 }

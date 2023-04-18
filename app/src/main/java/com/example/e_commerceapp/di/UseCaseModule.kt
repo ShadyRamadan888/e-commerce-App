@@ -2,6 +2,7 @@ package com.example.e_commerceapp.di
 
 import com.example.domain.repo.DefaultRepo
 import com.example.domain.usecase.CategoriesUseCase
+import com.example.domain.usecase.CategoryProductsUseCase
 import com.example.domain.usecase.GetProductDetailsUseCase
 import com.example.domain.usecase.HomeUseCase
 import dagger.Module
@@ -25,5 +26,9 @@ object UseCaseModule {
     @Provides
     fun provideProductById(defaultRepo: DefaultRepo): GetProductDetailsUseCase{
         return GetProductDetailsUseCase(defaultRepo)
+    }
+    @Provides
+    fun provideCategoryProducts(defaultRepo: DefaultRepo): CategoryProductsUseCase{
+        return CategoryProductsUseCase(defaultRepo)
     }
 }

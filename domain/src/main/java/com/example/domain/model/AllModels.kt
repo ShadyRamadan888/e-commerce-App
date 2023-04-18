@@ -38,7 +38,12 @@ data class Product(
 data class ProductRoot(
     var data: Product
 )
-
+data class ProductData(
+    var data:List<Product>
+)
+data class CatProduct(
+    var data:ProductData
+)
 data class Root(
     var status: Boolean,
     var message: Object,

@@ -1,5 +1,6 @@
 package com.example.e_commerceapp.ui.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -12,8 +13,11 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import com.balysv.materialripple.MaterialRippleLayout
 import com.bumptech.glide.Glide
 import com.example.e_commerceapp.R
+import com.example.e_commerceapp.databinding.FragmentCategoryBinding
+import com.example.e_commerceapp.ui.activties.CategoryProducts
 import com.example.e_commerceapp.ui.viewmodel.ProductsViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -23,14 +27,9 @@ import kotlin.math.log
 
 class CategoryFragment : Fragment() {
 
-
-    private lateinit var clothesImg: ImageView
-    private lateinit var sportsImg: ImageView
-    private lateinit var coronaImg: ImageView
-    private lateinit var devicesImg: ImageView
-    private lateinit var lightingImg: ImageView
     private lateinit var viewModel: ProductsViewModel
-    lateinit var toolbar: androidx.appcompat.widget.Toolbar
+    private lateinit var binding: FragmentCategoryBinding
+    private lateinit var imagesList: List<ImageView>
     private val TAG = "CategoryFragment"
 
     override fun onCreateView(
@@ -40,15 +39,32 @@ class CategoryFragment : Fragment() {
         // Inflate the layout for this fragment
         val view: View = inflater.inflate(R.layout.fragment_category, container, false)
 
-        assignVariables(view)
+        viewModel = ViewModelProvider(requireActivity())[ProductsViewModel::class.java]
 
-        getCategories()
+        binding = FragmentCategoryBinding.bind(view)
+
         setUpToolBar()
+
+        clickCategory(binding.sportsCategory, 42,"Sports")
+        clickCategory(binding.clothesCategory, 46,"Clothes")
+        clickCategory(binding.coronaCategory, 43,"Prevent Corona")
+        clickCategory(binding.lightingCategory, 40,"Lighting")
+        clickCategory(binding.electronicCategory, 44,"Electronics")
+        //*************//*************************
+        imagesList = listOf<ImageView>(
+            binding.devicesCategoryImage,
+            binding.coronaCategoryImage,
+            binding.sportsCategoryImage,
+            binding.lightingCategoryImage,
+            binding.clothesCategoryImage
+        )
+        getCategories(imagesList)
 
         return view
     }
 
-    private fun getCategories() {
+
+    private fun getCategories(images: List<ImageView>) {
 
         viewModel.getHome()
         lifecycleScope.launch(Dispatchers.IO) {
@@ -56,17 +72,11 @@ class CategoryFragment : Fragment() {
             viewModel.dataStateFlow.collect { dataState ->
                 try {
                     withContext(Dispatchers.Main) {
-                        Glide.with(requireContext())
-                            .load(dataState.categories?.data?.data?.get(0)?.image).into(devicesImg)
-                        Glide.with(requireContext())
-                            .load(dataState.categories?.data?.data?.get(1)?.image).into(coronaImg)
-                        Glide.with(requireContext())
-                            .load(dataState.categories?.data?.data?.get(2)?.image).into(sportsImg)
-                        Glide.with(requireContext())
-                            .load(dataState.categories?.data?.data?.get(3)?.image).into(lightingImg)
-                        Glide.with(requireContext())
-                            .load(dataState.categories?.data?.data?.get(4)?.image).into(clothesImg)
-
+                        for ((counter, i) in images.withIndex()) {
+                            Glide.with(requireContext())
+                                .load(dataState.categories?.data?.data?.get(counter)?.image)
+                                .into(i)
+                        }
                     }
                 } catch (e: Exception) {
                     Log.d(TAG, "getCategories: ${e.message}")
@@ -75,19 +85,18 @@ class CategoryFragment : Fragment() {
         }
     }
 
-    private fun assignVariables(view: View) {
-        toolbar = view.findViewById<Toolbar>(R.id.catToolBar) as androidx.appcompat.widget.Toolbar
-        viewModel = ViewModelProvider(requireActivity())[ProductsViewModel::class.java]
-        clothesImg = view.findViewById(R.id.clothesCategoryImage)
-        sportsImg = view.findViewById(R.id.sportsCategoryImage)
-        coronaImg = view.findViewById(R.id.coronaCategoryImage)
-        lightingImg = view.findViewById(R.id.lightingCategoryImage)
-        devicesImg = view.findViewById(R.id.devicesCategoryImage)
+    private fun clickCategory(materialRippleLayout: MaterialRippleLayout, id: Int,categoryName:String) {
+        materialRippleLayout.setOnClickListener {
+            val intent = Intent(requireContext(), CategoryProducts::class.java)
+            intent.putExtra("catId", id)
+            intent.putExtra("CatName",categoryName)
+            startActivity(intent)
+        }
     }
 
-    fun setUpToolBar() {
-        (requireActivity() as AppCompatActivity).setSupportActionBar(toolbar)
-        toolbar.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.app))
+    private fun setUpToolBar() {
+        (requireActivity() as AppCompatActivity).setSupportActionBar(binding.catToolBar)
+        binding.catToolBar.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.app))
     }
 
 }

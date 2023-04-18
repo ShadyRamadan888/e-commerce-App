@@ -1,6 +1,7 @@
 package com.example.data.repo
 
 import com.example.data.remote.ApiService
+import com.example.domain.model.CatProduct
 import com.example.domain.model.ProductRoot
 import com.example.domain.model.Root
 import com.example.domain.repo.DefaultRepo
@@ -14,4 +15,5 @@ class DefaultRepoImpl(private val apiService: ApiService) : DefaultRepo {
     }
     override suspend fun getAllCategories(): Root = apiService.getAllCategories("en")
     override suspend fun getProductById(id: Int): ProductRoot = apiService.getProductById("en",id)
+    override suspend fun getCategoryProducts(category_id: Int): CatProduct = apiService.getCategoryProducts("en",category_id)
 }

@@ -2,9 +2,11 @@ package com.example.e_commerceapp.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.domain.model.CatProduct
 import com.example.domain.model.ProductRoot
 import com.example.domain.model.Root
 import com.example.domain.usecase.CategoriesUseCase
+import com.example.domain.usecase.CategoryProductsUseCase
 import com.example.domain.usecase.GetProductDetailsUseCase
 import com.example.domain.usecase.HomeUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,7 +18,8 @@ import javax.inject.Inject
 class ProductsViewModel @Inject constructor(
     private val getHomeData: HomeUseCase,
     private val getCategories: CategoriesUseCase,
-    private val getProductDetails: GetProductDetailsUseCase
+    private val getProductDetails: GetProductDetailsUseCase,
+    private val getCategoryProducts: CategoryProductsUseCase
 ) : ViewModel() {
 
     private val TAG = "ProductsViewModel"
@@ -32,6 +35,9 @@ class ProductsViewModel @Inject constructor(
 
     private val _productStateFlow = MutableStateFlow<ProductRoot?>(null)
     val productStateFlow: StateFlow<ProductRoot?> = _productStateFlow
+
+    private val _catProductStateFlow = MutableStateFlow<CatProduct?>(null)
+    val catProductStateFlow: StateFlow<CatProduct?> = _catProductStateFlow
 
 
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
@@ -52,12 +58,23 @@ class ProductsViewModel @Inject constructor(
 
     fun getProduct(id:Int) {
 
-        viewModelScope.launch(Dispatchers.IO) {
+        coroutineScope.launch(Dispatchers.IO) {
             try {
                 val product = getProductDetails(id)
                 _productStateFlow.emit(product)
             } catch (e: Throwable) {
                 _productStateFlow.emit(null)
+            }
+        }
+    }
+
+    fun categoryProducts(category_id:Int){
+        coroutineScope.launch(Dispatchers.IO) {
+            try {
+                val product = getCategoryProducts(category_id)
+                _catProductStateFlow.emit(product)
+            } catch (e: Throwable) {
+                _catProductStateFlow.emit(null)
             }
         }
     }

@@ -49,7 +49,7 @@
                 android:backgroundTint="@color/white"
                 app:cardCornerRadius="20dp">
                 <com.balysv.materialripple.MaterialRippleLayout
-                    android:id="@+id/book_an_appointment"
+                    android:id="@+id/electronic_category"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
@@ -105,7 +105,7 @@
                 android:backgroundTint="@color/white"
                 app:cardCornerRadius="20dp">
                 <com.balysv.materialripple.MaterialRippleLayout
-                    android:id="@+id/bloodTest"
+                    android:id="@+id/corona_category"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     style="@style/RippleDesign">
@@ -151,7 +151,7 @@
                 <com.balysv.materialripple.MaterialRippleLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:id="@+id/surgeriesBox"
+                    android:id="@+id/sports_category"
                     style="@style/RippleDesign">
 
                     <LinearLayout
@@ -201,7 +201,7 @@
                 android:backgroundTint="@color/white"
                 app:cardCornerRadius="20dp">
                 <com.balysv.materialripple.MaterialRippleLayout
-                    android:id="@+id/pregnancyDiary"
+                    android:id="@+id/lighting_category"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     style="@style/RippleDesign">
@@ -245,7 +245,7 @@
                 android:backgroundTint="@color/white"
                 app:cardCornerRadius="20dp">
                 <com.balysv.materialripple.MaterialRippleLayout
-                    android:id="@+id/pregnancyDepression"
+                    android:id="@+id/clothes_category"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     style="@style/RippleDesign">

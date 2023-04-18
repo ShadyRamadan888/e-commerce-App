@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.e_commerceapp.utils.CheckInternetConnection
 import com.example.e_commerceapp.R
+import com.example.e_commerceapp.databinding.FragmentHomeBinding
 import com.example.e_commerceapp.utils.LoadingDialog
 import com.example.e_commerceapp.ui.adapters.BannerAdapter
 import com.example.e_commerceapp.ui.adapters.HomeProductAdapter
@@ -48,6 +49,7 @@ class HomeFragment : Fragment() {
     private lateinit var imageView: ImageView
     private lateinit var textView: TextView
     private lateinit var builder: AlertDialog.Builder
+    private lateinit var binding:FragmentHomeBinding
 
     lateinit var dialog: AlertDialog
     private val TAG = "HomeFragment"
@@ -65,13 +67,10 @@ class HomeFragment : Fragment() {
 
 
 
+        binding = FragmentHomeBinding.bind(view)
         assignVariables(view)
-        //alertDialog.create()
-        //alertDialog.setTitle("Connection")
-
         setUpToolBar()
         getHomeData()
-        //callNetworkConnection()
 
         return view
     }
@@ -86,13 +85,13 @@ class HomeFragment : Fragment() {
 
         loadingDialog = LoadingDialog(requireActivity())
         viewModel = ViewModelProvider(requireActivity())[ProductsViewModel::class.java]
-        homeProductRecyclerView = view.findViewById(R.id.homeProductRecyclerView)
+        homeProductRecyclerView = binding.homeProductRecyclerView
         homeProductRecyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
         homeProductRecyclerView.setHasFixedSize(true)
-        bannerSlider = view.findViewById(R.id.bannerHome)
-        shimmerFrameLayout = view.findViewById(R.id.shimmerFrameLayout)
+        bannerSlider = binding.bannerHome
+        shimmerFrameLayout = binding.shimmerFrameLayout
         facebookShimmerFactory = FacebookShimmerFactory(shimmerFrameLayout)
-        toolbar = view.findViewById<Toolbar>(R.id.toolBar) as androidx.appcompat.widget.Toolbar
+        toolbar = binding.toolBar
 
         if (!::homeProductAdapter.isInitialized) {
             homeProductAdapter = HomeProductAdapter(requireContext())
