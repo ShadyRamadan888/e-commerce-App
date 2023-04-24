@@ -1,7 +1,5 @@
 package com.example.domain.model
 
-import java.util.*
-
 data class Banner(
     var id: Int,
     var image: String,
@@ -38,8 +36,41 @@ data class Product(
 data class ProductRoot(
     var data: Product
 )
+data class AddRemoveFavOrCart(
+    var product_id:Int,
+)
+data class AddRemoveFavRes(
+    var id: Int,
+    var product: Root
+)
 data class ProductData(
     var data:List<Product>
+)
+data class GetAllFav(
+    var data: List<FavoriteData>
+)
+data class FavoriteData(
+    val id: Int,
+    val product: FavoriteAndCartProductModel
+)
+data class GetAllFavorites(
+    var favoriteData: List<FavoriteData>
+)
+data class FavoriteProduct(
+    val discount: Int,
+    val id: Int,
+    val image: String,
+    val old_price: Double,
+    val price: Double
+)
+data class FavoriteAndCartProductModel(
+    val description: String,
+    val discount: Int,
+    val id: Int,
+    val image: String,
+    val name: String,
+    val old_price: Double,
+    val price: Double
 )
 data class CatProduct(
     var data:ProductData

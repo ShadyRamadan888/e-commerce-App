@@ -2,7 +2,7 @@ package com.example.e_commerceapp.ui.adapters
 
 import android.content.Context
 import android.content.Intent
-import android.telecom.Call.Details
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,14 +10,20 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.domain.model.AddRemoveFavOrCart
 import com.example.domain.model.Product
 import com.example.e_commerceapp.R
 import com.example.e_commerceapp.ui.activties.ProductDetailsActivity
+import com.example.e_commerceapp.ui.viewmodel.ProductsViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlin.math.roundToInt
 
-class HomeProductAdapter(var context: Context) :
+class HomeProductAdapter(var context: Context, var viewModel: ProductsViewModel) :
     RecyclerView.Adapter<HomeProductAdapter.ViewHolder>() {
 
     private var homeList: List<Product> = listOf()
@@ -27,6 +33,8 @@ class HomeProductAdapter(var context: Context) :
         val productImage: ImageView = view.findViewById(R.id.product_image)
         val productPrice: TextView = view.findViewById(R.id.product_price)
         val productName: TextView = view.findViewById(R.id.product_name)
+        val productFavourite: ImageView = view.findViewById(R.id.img_favourite)
+
 
         //layout
         val item_layout: LinearLayout = view.findViewById(R.id.item_layout)
@@ -48,6 +56,16 @@ class HomeProductAdapter(var context: Context) :
             intent.putExtra("productId", data.id)
             context.startActivity(intent)
         }
+
+        if (data.in_favorites) {
+            holder.productFavourite.setImageResource(R.drawable.ic_baseline_favorite_24)
+        } else {
+            holder.productFavourite.setImageResource(R.drawable.fav_not_selected)
+        }
+        holder.productFavourite.setOnClickListener {
+            val addRemoveFavOrCart = AddRemoveFavOrCart(data.id)
+            addFavById(addRemoveFavOrCart)
+        }
     }
 
     override fun getItemCount(): Int {
@@ -57,5 +75,24 @@ class HomeProductAdapter(var context: Context) :
     fun updateData(homeList: List<Product>) {
         this.homeList = homeList
         notifyDataSetChanged()
+    }
+
+    private fun addFavById(addRemoveFavOrCart: AddRemoveFavOrCart) {
+        viewModel.addFavoriteById(addRemoveFavOrCart)
+        viewModel.viewModelScope.launch {
+            try {
+                viewModel.addFavStateFlow.collect {
+                    withContext(Dispatchers.Main){
+                        try {
+                            Toast.makeText(context, it!!.product.data.products[0].name, Toast.LENGTH_SHORT).show()
+                        }catch (e:Exception){
+                            Log.d(TAG, "SHRE1: ${e.message}")
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                Log.d(TAG, "SHRE2: ${e.message}")
+            }
+        }
     }
 }

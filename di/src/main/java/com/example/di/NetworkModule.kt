@@ -1,4 +1,4 @@
-package com.example.e_commerceapp.di
+package com.example.di
 
 import com.example.data.remote.ApiService
 import dagger.Module
@@ -26,7 +26,7 @@ object NetworkModule {
     }
     @Provides
     @Singleton
-    fun provideApiService(okHttpClient: OkHttpClient):ApiService{
+    fun provideApiService(okHttpClient: OkHttpClient): ApiService {
 
         return Retrofit.Builder()
             .baseUrl("https://student.valuxapps.com/api/")

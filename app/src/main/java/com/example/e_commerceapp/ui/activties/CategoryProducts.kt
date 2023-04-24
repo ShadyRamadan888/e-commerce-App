@@ -44,30 +44,30 @@ class CategoryProducts : AppCompatActivity() {
         val categoryName = intent.getStringExtra("CatName")
         binding.textToolbar.text = categoryName.toString()
 
-        getData(categoryID)
+        //getData(categoryID)
     }
 
 
-    private fun getData(category_id: Int) {
-
-        viewModel.categoryProducts(category_id)
-        lifecycleScope.launch(Dispatchers.IO) {
-            delay(2000)
-            viewModel.catProductStateFlow.collect { data ->
-                try {
-                    //Log.d(TAG, "SHR: ${data!!.data.data[0].name}")
-                    withContext(Dispatchers.Main) {
-                        categoriesAdapter =
-                            CategoriesAdapter(this@CategoryProducts, data!!.data.data)
-                        recyclerView.adapter = categoriesAdapter
-                        facebookShimmerFactory.stopShimmer()
-                    }
-                } catch (e: Exception) {
-                    Log.d(TAG, "SHR: ${e.message}")
-                }
-            }
-        }
-    }
+//    private fun getData(category_id: Int) {
+//
+//        viewModel.categoryProducts(category_id)
+//        lifecycleScope.launch(Dispatchers.IO) {
+//            delay(2000)
+//            viewModel.catProductStateFlow.collect { data ->
+//                try {
+//                    //Log.d(TAG, "SHR: ${data!!.data.data[0].name}")
+//                    withContext(Dispatchers.Main) {
+//                        categoriesAdapter =
+//                            CategoriesAdapter(this@CategoryProducts, data!!.data.data)
+//                        recyclerView.adapter = categoriesAdapter
+//                        facebookShimmerFactory.stopShimmer()
+//                    }
+//                } catch (e: Exception) {
+//                    Log.d(TAG, "SHR: ${e.message}")
+//                }
+//            }
+//        }
+//    }
 
     private fun assignVariables() {
         viewModel = ViewModelProvider(this)[ProductsViewModel::class.java]

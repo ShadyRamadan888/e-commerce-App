@@ -44,6 +44,7 @@
                         android:gravity="end">
 
                         <ImageView
+                            android:id="@+id/img_favourite"
                             android:layout_width="25dp"
                             android:layout_height="25dp"
                             android:src="@drawable/fav_not_selected" />

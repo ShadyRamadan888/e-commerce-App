@@ -1,8 +1,6 @@
 package com.example.domain.repo
 
-import com.example.domain.model.CatProduct
-import com.example.domain.model.ProductRoot
-import com.example.domain.model.Root
+import com.example.domain.model.*
 import kotlinx.coroutines.flow.Flow
 
 interface DefaultRepo {
@@ -11,4 +9,6 @@ interface DefaultRepo {
     suspend fun getAllCategories(): Root
     suspend fun getProductById(id:Int): ProductRoot
     suspend fun getCategoryProducts(category_id:Int): CatProduct
+    suspend fun addFavoriteById(fav:AddRemoveFavOrCart): AddRemoveFavRes
+    suspend fun getAllFav():GetAllFav
 }

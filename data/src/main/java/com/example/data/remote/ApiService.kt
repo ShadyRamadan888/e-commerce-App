@@ -1,20 +1,18 @@
 package com.example.data.remote
 
-import com.example.domain.model.CatProduct
-import com.example.domain.model.Data
-import com.example.domain.model.ProductRoot
-import com.example.domain.model.Root
-import kotlinx.coroutines.flow.Flow
+import com.example.domain.model.*
 import retrofit2.Response
+import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ApiService {
 
     @GET("home")
-    suspend fun getHomeData(@Header("lang") lang: String): Root
+    suspend fun getHomeData(@Header("lang") lang: String): Response<Root>
 
     @GET("categories")
     suspend fun getAllCategories(@Header("lang") lang: String): Root
@@ -30,4 +28,10 @@ interface ApiService {
         @Header("lang") lang: String,
         @Query("category_id") category_id: Int
     ): CatProduct
+
+    @POST("favorites")
+    suspend fun addFavoriteById(@Body fav:AddRemoveFavOrCart, @Header("lang") lang: String): AddRemoveFavRes
+
+    @GET("favorites")
+    suspend fun getAllFavorites(@Header("lang") lang:String):GetAllFav
 }

@@ -1,14 +1,8 @@
 package com.example.e_commerceapp.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.example.domain.model.CatProduct
-import com.example.domain.model.ProductRoot
-import com.example.domain.model.Root
-import com.example.domain.usecase.CategoriesUseCase
-import com.example.domain.usecase.CategoryProductsUseCase
-import com.example.domain.usecase.GetProductDetailsUseCase
-import com.example.domain.usecase.HomeUseCase
+import com.example.domain.model.*
+import com.example.domain.usecase.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
@@ -19,7 +13,9 @@ class ProductsViewModel @Inject constructor(
     private val getHomeData: HomeUseCase,
     private val getCategories: CategoriesUseCase,
     private val getProductDetails: GetProductDetailsUseCase,
-    private val getCategoryProducts: CategoryProductsUseCase
+    private val getCategoryProducts: CategoryProductsUseCase,
+    private val addFavById: AddFavoriteUseCase,
+    private val getAllFav:GetAllFavoritesUseCase
 ) : ViewModel() {
 
     private val TAG = "ProductsViewModel"
@@ -39,6 +35,12 @@ class ProductsViewModel @Inject constructor(
     private val _catProductStateFlow = MutableStateFlow<CatProduct?>(null)
     val catProductStateFlow: StateFlow<CatProduct?> = _catProductStateFlow
 
+
+    private val _addFavStateFlow = MutableStateFlow<AddRemoveFavRes?>(null)
+    val addFavStateFlow:StateFlow<AddRemoveFavRes?> = _addFavStateFlow
+
+    private val _getAllFavStateFlow = MutableStateFlow<GetAllFav?>(null)
+    val getAllFavStateFlow:StateFlow<GetAllFav?> = _getAllFavStateFlow
 
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
 
@@ -75,6 +77,29 @@ class ProductsViewModel @Inject constructor(
                 _catProductStateFlow.emit(product)
             } catch (e: Throwable) {
                 _catProductStateFlow.emit(null)
+            }
+        }
+    }
+
+    fun addFavoriteById(fav:AddRemoveFavOrCart){
+        coroutineScope.launch {
+            try {
+                val addFavItem = addFavById(fav)
+                _addFavStateFlow.emit(addFavItem)
+            }catch (e:Exception){
+                _addFavStateFlow.emit(null)
+            }
+        }
+    }
+
+    fun getAllFavoriteItems(){
+
+        coroutineScope.launch {
+            try {
+                val data = getAllFav()
+                _getAllFavStateFlow.emit(data)
+            }catch (e:Exception){
+                _getAllFavStateFlow.emit(null)
             }
         }
     }

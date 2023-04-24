@@ -53,6 +53,7 @@ class ProductDetailsActivity : AppCompatActivity() {
         myViewModel = ViewModelProvider(this)[ProductsViewModel::class.java]
         productId = intent.getIntExtra("productId", 0)
         loadMoreAndLessFactory()
+
         getProductById(productId!!)
     }
 

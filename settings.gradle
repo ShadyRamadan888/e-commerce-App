@@ -19,3 +19,4 @@ rootProject.name = "e_commerce App"
 include ':app'
 include ':data'
 include ':domain'
+include ':di'

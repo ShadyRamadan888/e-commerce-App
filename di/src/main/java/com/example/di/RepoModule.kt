@@ -1,4 +1,4 @@
-package com.example.e_commerceapp.di
+package com.example.di
 
 import com.example.data.remote.ApiService
 import com.example.data.repo.DefaultRepoImpl
@@ -8,13 +8,12 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 
-
 @Module
 @InstallIn(SingletonComponent::class)
 object RepoModule {
 
     @Provides
-    fun provideHomeRepo(apiService: ApiService):DefaultRepo{
+    fun provideHomeRepo(apiService: ApiService): DefaultRepo {
         return DefaultRepoImpl(apiService)
     }
 }

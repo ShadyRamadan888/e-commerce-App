@@ -70,6 +70,7 @@ class HomeFragment : Fragment() {
         binding = FragmentHomeBinding.bind(view)
         assignVariables(view)
         setUpToolBar()
+
         getHomeData()
 
         return view
@@ -94,7 +95,7 @@ class HomeFragment : Fragment() {
         toolbar = binding.toolBar
 
         if (!::homeProductAdapter.isInitialized) {
-            homeProductAdapter = HomeProductAdapter(requireContext())
+            homeProductAdapter = HomeProductAdapter(requireContext(),viewModel)
         }
 
         bannerAdapter = BannerAdapter(requireContext())
