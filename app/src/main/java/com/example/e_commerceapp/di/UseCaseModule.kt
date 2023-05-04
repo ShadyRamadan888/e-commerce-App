@@ -1,4 +1,4 @@
-package com.example.di
+package com.example.e_commerceapp.di
 
 import com.example.domain.repo.DefaultRepo
 import com.example.domain.usecase.*
@@ -29,11 +29,12 @@ object UseCaseModule {
         return CategoryProductsUseCase(defaultRepo)
     }
     @Provides
-    fun provideAddingFavById(defaultRepo: DefaultRepo): AddFavoriteUseCase {
-        return AddFavoriteUseCase(defaultRepo)
-    }
-    @Provides
     fun provideGetAllFav(defaultRepo: DefaultRepo): GetAllFavoritesUseCase {
         return GetAllFavoritesUseCase(defaultRepo)
     }
+    @Provides
+    fun provideCartsUseCase(defaultRepo: DefaultRepo): AddCartUseCase {
+        return AddCartUseCase(defaultRepo)
+    }
+
 }

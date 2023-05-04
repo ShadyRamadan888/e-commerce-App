@@ -46,6 +46,7 @@ android {
     }
     buildFeatures {
         viewBinding true
+        dataBinding true
     }
 
 }
@@ -99,7 +100,7 @@ dependencies {
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 
     implementation project(':domain')
-    implementation project(':di')
+    implementation project(':data')
     //hilt
     implementation("com.google.dagger:hilt-android:2.44")
     kapt("com.google.dagger:hilt-android-compiler:2.44")
@@ -112,6 +113,10 @@ dependencies {
 
     //facebook shimmer
     implementation 'com.facebook.shimmer:shimmer:0.5.0'
+
+    //Picasso
+    implementation 'com.squareup.picasso:picasso:2.71828'
+
 }
 kapt {
     correctErrorTypes = true

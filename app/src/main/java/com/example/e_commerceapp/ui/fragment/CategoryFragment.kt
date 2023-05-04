@@ -45,11 +45,11 @@ class CategoryFragment : Fragment() {
 
         setUpToolBar()
 
-        clickCategory(binding.sportsCategory, 42,"Sports")
-        clickCategory(binding.clothesCategory, 46,"Clothes")
-        clickCategory(binding.coronaCategory, 43,"Prevent Corona")
-        clickCategory(binding.lightingCategory, 40,"Lighting")
-        clickCategory(binding.electronicCategory, 44,"Electronics")
+        clickCategory(binding.sportsCategory, 42, "Sports")
+        clickCategory(binding.clothesCategory, 46, "Clothes")
+        clickCategory(binding.coronaCategory, 43, "Prevent Corona")
+        clickCategory(binding.lightingCategory, 40, "Lighting")
+        clickCategory(binding.electronicCategory, 44, "Electronics")
         //*************//*************************
         imagesList = listOf<ImageView>(
             binding.devicesCategoryImage,
@@ -69,13 +69,15 @@ class CategoryFragment : Fragment() {
         viewModel.getHome()
         lifecycleScope.launch(Dispatchers.IO) {
 
-            viewModel.dataStateFlow.collect { dataState ->
+            viewModel.viewStateFlow.collect { dataState ->
                 try {
                     withContext(Dispatchers.Main) {
                         for ((counter, i) in images.withIndex()) {
-                            Glide.with(requireContext())
-                                .load(dataState.categories?.data?.data?.get(counter)?.image)
-                                .into(i)
+                            dataState.categories!!.collect { category ->
+                                Glide.with(requireContext())
+                                    .load(category.data.data.get(counter).image)
+                                    .into(i)
+                            }
                         }
                     }
                 } catch (e: Exception) {
@@ -85,11 +87,15 @@ class CategoryFragment : Fragment() {
         }
     }
 
-    private fun clickCategory(materialRippleLayout: MaterialRippleLayout, id: Int,categoryName:String) {
+    private fun clickCategory(
+        materialRippleLayout: MaterialRippleLayout,
+        id: Int,
+        categoryName: String
+    ) {
         materialRippleLayout.setOnClickListener {
             val intent = Intent(requireContext(), CategoryProducts::class.java)
             intent.putExtra("catId", id)
-            intent.putExtra("CatName",categoryName)
+            intent.putExtra("CatName", categoryName)
             startActivity(intent)
         }
     }

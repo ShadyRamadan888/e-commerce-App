@@ -1,4 +1,4 @@
-package com.example.di
+package com.example.e_commerceapp.di
 
 import com.example.data.remote.ApiService
 import dagger.Module

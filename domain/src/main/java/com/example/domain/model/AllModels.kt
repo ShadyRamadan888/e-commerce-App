@@ -80,3 +80,14 @@ data class Root(
     var message: Object,
     var data: Data
 )
+data class AddRemoveCartRoot(
+    var product_id:Int
+)
+data class GetCarts(
+    var data: List<Product>
+)
+data class MyResponse <T>(
+    val data: T,
+    val message: String,
+    val status: Boolean
+)

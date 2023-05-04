@@ -157,6 +157,7 @@
                 android:textColor="@color/app"
                 android:textSize="22sp" />
             <Button
+                android:id="@+id/addCartBtn"
                 android:background="@drawable/add_btn_background"
                 android:layout_width="0dp"
                 android:text="Add to cart"

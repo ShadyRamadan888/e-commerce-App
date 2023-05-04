@@ -6,21 +6,31 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.domain.model.FavoritesEntity
 import com.example.e_commerceapp.R
 import com.example.e_commerceapp.databinding.FragmentFavouritesBinding
+import com.example.e_commerceapp.ui.adapters.FavoritesAdapter
 import com.example.e_commerceapp.ui.viewmodel.ProductsViewModel
+import com.example.e_commerceapp.utils.SwipeToDeleteCallback
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 
 class FavouritesFragment : Fragment() {
 
-    private  val TAG = "FavouritesFragment"
+    private val TAG = "FavouritesFragment"
     private lateinit var viewModel: ProductsViewModel
     private lateinit var binding: FragmentFavouritesBinding
+    private lateinit var favoritesAdapter: FavoritesAdapter
+    private lateinit var swipeToDeleteCallback: SwipeToDeleteCallback
+    private lateinit var itemTouchHelper: ItemTouchHelper
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,6 +42,11 @@ class FavouritesFragment : Fragment() {
         viewModel = ViewModelProvider(requireActivity())[ProductsViewModel::class.java]
         binding = FragmentFavouritesBinding.bind(view)
 
+        binding.favRecycler.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        binding.favRecycler.setHasFixedSize(true)
+
+
 
         return view
     }
@@ -39,26 +54,62 @@ class FavouritesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //getAllFav()
+        getAllFav()
+
     }
 
-    private fun getAllFav(){
-        viewModel.getAllFavoriteItems()
-        lifecycleScope.launch(Dispatchers.IO) {
-            try {
-                viewModel.getAllFavStateFlow.collect{
 
-                    withContext(Dispatchers.Main){
-                        try {
-                            //Log.d(TAG, "SHR_All_Fav: ${it!!.data[0].data.name}")
-                        }catch (e:Exception){
-                            Log.d(TAG, "SHR_All_Fav_E: ${e.message}")
+    private fun getAllFav() {
+        viewModel.getAllFavorites(requireContext())
+        lifecycleScope.launch {
+            try {
+                viewModel.viewStateFlow.collect{
+
+                    try {
+                        withContext(Dispatchers.Main){
+                            favoritesAdapter = FavoritesAdapter(requireContext())
+                            favoritesAdapter.setList(it.favorites!!)
+                            binding.favRecycler.adapter = favoritesAdapter
+                            swipeToDeleteCallback = SwipeToDeleteCallback(favoritesAdapter)
+                            itemTouchHelper = ItemTouchHelper(swipeToDeleteCallback)
+                            itemTouchHelper.attachToRecyclerView(binding.favRecycler)
                         }
+                    } catch (e: Exception) {
+                        Log.d(TAG, "SHR: ${e.message}")
                     }
+
                 }
-            }catch (e:Exception){
+            } catch (e: Exception) {
                 Log.d(TAG, "SHR: ${e.message}")
             }
         }
     }
+
+//    private fun getAllFav() {
+//        viewModel.getAllFavorites(requireContext())
+//        lifecycleScope.launch {
+//            try {
+//                viewModel.favoriteStateFlow.collect { favorites ->
+//                    updateFavoritesList(favorites)
+//                }
+//            } catch (e: Exception) {
+//                Log.d(TAG, "SHR: ${e.message}")
+//            }
+//        }
+//    }
+//
+//    private fun updateFavoritesList(favorites: List<FavoritesEntity>?) {
+//        try {
+//            favoritesAdapter = FavoritesAdapter(requireContext())
+//            favoritesAdapter.setList(favorites!!)
+//            binding.favRecycler.adapter = favoritesAdapter
+//            swipeToDeleteCallback = SwipeToDeleteCallback(favoritesAdapter)
+//            itemTouchHelper = ItemTouchHelper(swipeToDeleteCallback)
+//            itemTouchHelper.attachToRecyclerView(binding.favRecycler)
+//        } catch (e: Exception) {
+//            Log.d(TAG, "SHR: ${e.message}")
+//        }
+//    }
+//
+
 }

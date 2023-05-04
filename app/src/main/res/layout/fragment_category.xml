@@ -11,18 +11,8 @@
         android:id="@+id/catToolBar"
         app:titleTextColor="@color/white"
         android:layout_width="match_parent"
-        app:title=" "
-        android:layoutDirection="rtl"
+        app:title="Categories"
         android:layout_height="wrap_content" >
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="Categories"
-            android:textStyle="bold"
-            android:textColor="@android:color/white"
-            android:textSize="18sp" />
     </androidx.appcompat.widget.Toolbar>
 
     <LinearLayout
@@ -64,8 +54,7 @@
                             android:id="@+id/devicesCategoryImage"
                             android:layout_width="match_parent"
                             android:layout_height="150dp"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/wifi_connect"/>
+                            android:scaleType="centerCrop"/>
                         <TextView
                             android:id="@+id/devicesCategoryText"
                             android:layout_width="match_parent"
@@ -120,8 +109,7 @@
                             android:layout_width="120dp"
                             android:layout_height="150dp"
                             android:layout_gravity="center"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/wifi_connect"/>
+                            android:scaleType="centerCrop"/>
                         <TextView
                             android:id="@+id/coronaCategoryText"
                             android:layout_width="match_parent"
@@ -164,8 +152,7 @@
                             android:layout_width="120dp"
                             android:layout_height="150dp"
                             android:layout_gravity="center"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/wifi_connect"/>
+                            android:scaleType="centerCrop" />
                         <TextView
                             android:id="@+id/sportsCategoryText"
                             android:layout_width="match_parent"
@@ -216,8 +203,7 @@
                             android:layout_width="120dp"
                             android:layout_height="150dp"
                             android:scaleType="centerCrop"
-                            android:layout_gravity="center"
-                            android:src="@drawable/wifi_connect"/>
+                            android:layout_gravity="center"/>
                         <TextView
                             android:id="@+id/lightingCategoryText"
                             android:layout_width="match_parent"
@@ -260,8 +246,7 @@
                             android:layout_width="120dp"
                             android:layout_height="150dp"
                             android:layout_gravity="center"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/wifi_connect"/>
+                            android:scaleType="centerCrop"/>
                         <TextView
                             android:id="@+id/clothesCategoryText"
                             android:layout_width="match_parent"

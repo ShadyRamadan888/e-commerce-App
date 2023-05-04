@@ -7,12 +7,14 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.*
+import com.example.domain.model.AddRemoveCartRoot
 import com.example.e_commerceapp.R
 import com.example.e_commerceapp.ui.adapters.ImgDetailsAdapter
 import com.example.e_commerceapp.ui.viewmodel.ProductsViewModel
@@ -40,6 +42,7 @@ class ProductDetailsActivity : AppCompatActivity() {
     private lateinit var imgSliderView: SliderView
     lateinit var facebookShimmerFactory: FacebookShimmerFactory
     lateinit var shimmerFrameLayout: ShimmerFrameLayout
+    lateinit var addCartBtn: Button
 
     lateinit var myViewModel: ProductsViewModel
 
@@ -55,6 +58,7 @@ class ProductDetailsActivity : AppCompatActivity() {
         loadMoreAndLessFactory()
 
         getProductById(productId!!)
+
     }
 
     @SuppressLint("SetTextI18n")
@@ -63,15 +67,15 @@ class ProductDetailsActivity : AppCompatActivity() {
         myViewModel.getProduct(id)
         lifecycleScope.launch(Dispatchers.IO) {
             try {
-                myViewModel.productStateFlow.collect { data ->
+                myViewModel.viewStateFlow.collect { data ->
                     withContext(Dispatchers.Main) {
                         try {
                             imgDetailsAdapter = ImgDetailsAdapter(this@ProductDetailsActivity)
-                            imgDetailsAdapter.setList(data!!.data.images)
+                            imgDetailsAdapter.setList(data.product!!.data.images)
                             imgSliderView.setSliderAdapter(imgDetailsAdapter)
-                            productName.text = data.data.name
-                            productPrice.text = "$${data.data.price.roundToInt()}"
-                            productDesc.text = data.data.description
+                            productName.text = data.product.data.name
+                            productPrice.text = "$${data.product.data.price.roundToInt()}"
+                            productDesc.text = data.product.data.description
                             facebookShimmerFactory.stopShimmer()
                         } catch (e: Exception) {
                             Log.d(TAG, "SHR: ${e.message}")
@@ -93,6 +97,8 @@ class ProductDetailsActivity : AppCompatActivity() {
         productPrice = findViewById(R.id.product_price)
         productDesc = findViewById(R.id.product_desc)
         loadMore = findViewById(R.id.load_more_button)
+        //Cart
+        addCartBtn = findViewById(R.id.addCartBtn)
     }
 
     private fun loadMoreAndLessFactory() {
@@ -128,4 +134,5 @@ class ProductDetailsActivity : AppCompatActivity() {
             onBackPressed()
         }
     }
+
 }

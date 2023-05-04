@@ -14,7 +14,6 @@
         android:layout_width="match_parent"
         app:title=" "
         android:background="@color/app"
-        android:layoutDirection="rtl"
         android:layout_height="wrap_content" >
 
         <TextView

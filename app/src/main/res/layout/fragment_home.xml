@@ -12,18 +12,9 @@
         android:id="@+id/toolBar"
         app:titleTextColor="@color/white"
         android:layout_width="match_parent"
-        app:title=" "
-        android:layoutDirection="rtl"
+        app:title="Home"
+        android:layoutDirection="ltr"
         android:layout_height="wrap_content" >
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="Home"
-            android:textStyle="bold"
-            android:textColor="@android:color/white"
-            android:textSize="18sp" />
     </androidx.appcompat.widget.Toolbar>
 
 
@@ -100,7 +91,6 @@
                 app:sliderIndicatorSelectedColor="@color/white"
                 app:sliderIndicatorUnselectedColor="@color/white"
                 app:sliderScrollTimeInSec="2"
-                android:visibility="gone"
                 app:sliderStartAutoCycle="true" />
 
 
@@ -109,7 +99,6 @@
                 android:id="@+id/homeProductRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:visibility="gone"
                 android:padding="5dp" />
         </LinearLayout>
 

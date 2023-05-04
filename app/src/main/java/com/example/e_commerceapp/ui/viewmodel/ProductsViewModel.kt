@@ -1,6 +1,12 @@
 package com.example.e_commerceapp.ui.viewmodel
 
+import android.content.Context
+import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.data.local.fav_room.FavoriteDatabase
 import com.example.domain.model.*
 import com.example.domain.usecase.*
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -8,101 +14,126 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
+
 @HiltViewModel
 class ProductsViewModel @Inject constructor(
     private val getHomeData: HomeUseCase,
     private val getCategories: CategoriesUseCase,
     private val getProductDetails: GetProductDetailsUseCase,
     private val getCategoryProducts: CategoryProductsUseCase,
-    private val addFavById: AddFavoriteUseCase,
-    private val getAllFav:GetAllFavoritesUseCase
+    private val addRemoveCart: AddCartUseCase,
+    private val getAllFav: GetAllFavoritesUseCase
 ) : ViewModel() {
 
     private val TAG = "ProductsViewModel"
 
-    data class DataState(
-        val home: Flow<Root>?,
-        val categories: Root?,
-        val error: Throwable?
+
+    data class ProductsViewState(
+        val home: Flow<Root>? = null,
+        val categories: Flow<Root>? = null,
+        val product: ProductRoot? = null,
+        val catProduct: CatProduct? = null,
+        val carts: MyResponse<GetCarts>? = null,
+        val favorites: List<FavoritesEntity>? = null,
+        val isLoading: Boolean = false,
+        val error: Throwable? = null
     )
 
-    private val _dataStateFlow = MutableStateFlow<DataState>(DataState(null, null, null))
-    val dataStateFlow: StateFlow<DataState> = _dataStateFlow
-
-    private val _productStateFlow = MutableStateFlow<ProductRoot?>(null)
-    val productStateFlow: StateFlow<ProductRoot?> = _productStateFlow
-
-    private val _catProductStateFlow = MutableStateFlow<CatProduct?>(null)
-    val catProductStateFlow: StateFlow<CatProduct?> = _catProductStateFlow
+    private val _viewStateFlow = MutableStateFlow(ProductsViewState())
+    val viewStateFlow: StateFlow<ProductsViewState> = _viewStateFlow
 
 
-    private val _addFavStateFlow = MutableStateFlow<AddRemoveFavRes?>(null)
-    val addFavStateFlow:StateFlow<AddRemoveFavRes?> = _addFavStateFlow
+    //Carts
+    private val _cartsStateFlow = MutableStateFlow<MyResponse<GetCarts>?>(null)
+    val cartsStateFlow: StateFlow<MyResponse<GetCarts>?> = _cartsStateFlow
 
-    private val _getAllFavStateFlow = MutableStateFlow<GetAllFav?>(null)
-    val getAllFavStateFlow:StateFlow<GetAllFav?> = _getAllFavStateFlow
 
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
 
     fun getHome() {
         coroutineScope.launch {
             try {
-                val home = getHomeData()
-                val categories = getCategories()
-
-                _dataStateFlow.emit(DataState(home, categories, null))
+                _viewStateFlow.value = ProductsViewState(
+                    home = getHomeData(),
+                    categories = getCategories(),
+                    isLoading = true
+                )
             } catch (e: Throwable) {
-                _dataStateFlow.emit(DataState(null, null, e))
+                _viewStateFlow.value = ProductsViewState(error = e)
             }
         }
     }
 
 
-    fun getProduct(id:Int) {
+    fun getProduct(id: Int) {
 
         coroutineScope.launch(Dispatchers.IO) {
             try {
                 val product = getProductDetails(id)
-                _productStateFlow.emit(product)
+                _viewStateFlow.value = ProductsViewState(
+                    product = product,
+                    isLoading = true
+                )
             } catch (e: Throwable) {
-                _productStateFlow.emit(null)
+                _viewStateFlow.value = ProductsViewState(
+                    error = e
+                )
             }
         }
     }
 
-    fun categoryProducts(category_id:Int){
+    fun categoryProducts(category_id: Int) {
         coroutineScope.launch(Dispatchers.IO) {
             try {
                 val product = getCategoryProducts(category_id)
-                _catProductStateFlow.emit(product)
+                _viewStateFlow.value = ProductsViewState(
+                    catProduct = product,
+                    isLoading = true
+                )
             } catch (e: Throwable) {
-                _catProductStateFlow.emit(null)
+                _viewStateFlow.value = ProductsViewState(
+                    error = e
+                )
             }
         }
     }
 
-    fun addFavoriteById(fav:AddRemoveFavOrCart){
+
+    fun addRemoveCarts(cartRoot: AddRemoveCartRoot) {
         coroutineScope.launch {
             try {
-                val addFavItem = addFavById(fav)
-                _addFavStateFlow.emit(addFavItem)
-            }catch (e:Exception){
-                _addFavStateFlow.emit(null)
+                val carts = addRemoveCart(cartRoot)
+                _viewStateFlow.value = ProductsViewState(
+                    carts = carts,
+                    isLoading = true
+                )
+            } catch (e: Exception) {
+                _viewStateFlow.value = ProductsViewState(
+                    error = e
+                )
             }
         }
     }
 
-    fun getAllFavoriteItems(){
 
+    fun getAllFavorites(context: Context) {
         coroutineScope.launch {
             try {
-                val data = getAllFav()
-                _getAllFavStateFlow.emit(data)
-            }catch (e:Exception){
-                _getAllFavStateFlow.emit(null)
+                val data = getAllFav(context)
+                withContext(Dispatchers.Main) {
+                    _viewStateFlow.value = ProductsViewState(
+                        favorites = data,
+                        isLoading = true
+                    )
+                }
+            } catch (e: Exception) {
+                _viewStateFlow.value = ProductsViewState(
+                    error = e
+                )
             }
         }
     }
+
     override fun onCleared() {
         super.onCleared()
         //To avoid memory leak

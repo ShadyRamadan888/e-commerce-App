@@ -15,7 +15,7 @@ interface ApiService {
     suspend fun getHomeData(@Header("lang") lang: String): Response<Root>
 
     @GET("categories")
-    suspend fun getAllCategories(@Header("lang") lang: String): Root
+    suspend fun getAllCategories(@Header("lang") lang: String): Response<Root>
 
     @GET("categories/44")
     suspend fun getSpecificCategory(@Header("lang") lang: String): Root
@@ -29,9 +29,7 @@ interface ApiService {
         @Query("category_id") category_id: Int
     ): CatProduct
 
-    @POST("favorites")
-    suspend fun addFavoriteById(@Body fav:AddRemoveFavOrCart, @Header("lang") lang: String): AddRemoveFavRes
-
-    @GET("favorites")
-    suspend fun getAllFavorites(@Header("lang") lang:String):GetAllFav
+    //Carts
+    @POST("carts")
+    suspend fun addRemoveCart(@Header("lang") lang: String,@Body sendId: AddRemoveCartRoot): MyResponse<GetCarts>
 }

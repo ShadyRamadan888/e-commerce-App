@@ -1,4 +1,4 @@
-package com.example.di
+package com.example.e_commerceapp.di
 
 import com.example.data.remote.ApiService
 import com.example.data.repo.DefaultRepoImpl
@@ -16,4 +16,5 @@ object RepoModule {
     fun provideHomeRepo(apiService: ApiService): DefaultRepo {
         return DefaultRepoImpl(apiService)
     }
+
 }

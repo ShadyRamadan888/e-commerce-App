@@ -3,6 +3,8 @@ package com.example.e_commerceapp.ui.activties
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -38,41 +40,53 @@ class CategoryProducts : AppCompatActivity() {
 
 
         assignVariables()
+
+        setUpToolBar()
+
         facebookShimmerFactory.startShimmer()
 
         val categoryID = intent.getIntExtra("catId", 0)
         val categoryName = intent.getStringExtra("CatName")
         binding.textToolbar.text = categoryName.toString()
 
-        //getData(categoryID)
+        getData(categoryID)
     }
 
 
-//    private fun getData(category_id: Int) {
-//
-//        viewModel.categoryProducts(category_id)
-//        lifecycleScope.launch(Dispatchers.IO) {
-//            delay(2000)
-//            viewModel.catProductStateFlow.collect { data ->
-//                try {
-//                    //Log.d(TAG, "SHR: ${data!!.data.data[0].name}")
-//                    withContext(Dispatchers.Main) {
-//                        categoriesAdapter =
-//                            CategoriesAdapter(this@CategoryProducts, data!!.data.data)
-//                        recyclerView.adapter = categoriesAdapter
-//                        facebookShimmerFactory.stopShimmer()
-//                    }
-//                } catch (e: Exception) {
-//                    Log.d(TAG, "SHR: ${e.message}")
-//                }
-//            }
-//        }
-//    }
+    private fun getData(category_id: Int) {
+
+        viewModel.categoryProducts(category_id)
+        lifecycleScope.launch(Dispatchers.IO) {
+            delay(2000)
+            viewModel.viewStateFlow.collect { data ->
+                try {
+                    withContext(Dispatchers.Main) {
+                        categoriesAdapter =
+                            CategoriesAdapter(this@CategoryProducts, data.catProduct!!.data.data)
+                        recyclerView.adapter = categoriesAdapter
+                        facebookShimmerFactory.stopShimmer()
+                    }
+                } catch (e: Exception) {
+                    Log.d(TAG, "SHR: ${e.message}")
+                }
+            }
+        }
+    }
 
     private fun assignVariables() {
         viewModel = ViewModelProvider(this)[ProductsViewModel::class.java]
         recyclerView = binding.categoryProductsRecycler
         facebookShimmerFactory = FacebookShimmerFactory(binding.shimmerFrameLayout)
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+    }
+
+    private fun setUpToolBar() {
+        setSupportActionBar(binding.catToolBar)
+        binding.catToolBar.setBackgroundColor(ContextCompat.getColor(this, R.color.app))
+        binding.catToolBar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24)
+        binding.catToolBar.setNavigationOnClickListener {
+            // Handle click on the icon
+            onBackPressed()
+        }
     }
 }
