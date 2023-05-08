@@ -43,6 +43,4 @@ class CheckInternetConnection(private val connectivityManager: ConnectivityManag
         super.onInactive()
         connectivityManager.unregisterNetworkCallback(networkCallback)
     }
-
-
 }

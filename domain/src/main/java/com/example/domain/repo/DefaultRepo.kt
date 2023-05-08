@@ -13,6 +13,8 @@ interface DefaultRepo {
 
     //Carts
     suspend fun addCart(sendId: AddRemoveCartRoot): MyResponse<GetCarts>
+    //*****//****
+    suspend fun getAllCarts(context: Context): List<CartEntity>
 
     //Favorites
     suspend fun getAllFav(context: Context): List<FavoritesEntity>

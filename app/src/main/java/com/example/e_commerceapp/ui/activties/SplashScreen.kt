@@ -1,4 +1,4 @@
-package com.example.ui.activties
+package com.example.e_commerceapp.ui.activties
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -13,7 +13,7 @@ class SplashScreen : AppCompatActivity() {
 
         Handler().postDelayed(
             Runnable {
-                startActivity(Intent(this, MainActivity::class.java))
+                startActivity(Intent(this, SignUpActivity::class.java))
                 finish()
             }, 3000
         )

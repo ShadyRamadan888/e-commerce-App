@@ -17,6 +17,20 @@
         android:theme="@style/Theme.E_commerceApp"
         tools:targetApi="31">
         <activity
+            android:name=".ui.activties.SignUpActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".ui.activties.SignInActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".ui.activties.CategoryProducts"
             android:exported="false">
             <meta-data
@@ -31,25 +45,26 @@
                 android:value="" />
         </activity>
         <activity
-            android:name="com.example.ui.activties.SplashScreen"
+            android:name=".ui.activties.SplashScreen"
             android:exported="true"
             android:theme="@style/Theme.E_commerceAppSplash">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
 
+
+        </activity>
+        <activity
+            android:name=".ui.activties.MainActivity"
+            android:exported="true">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name="com.example.ui.activties.MainActivity"
-            android:exported="true">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
         </activity>
     </application>
 

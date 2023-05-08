@@ -15,6 +15,7 @@ object UseCaseModule {
     fun provideHomeData(defaultRepo: DefaultRepo): HomeUseCase {
         return HomeUseCase(defaultRepo)
     }
+
     @Provides
     fun provideCategories(defaultRepo: DefaultRepo): CategoriesUseCase {
         return CategoriesUseCase(defaultRepo)
@@ -24,17 +25,26 @@ object UseCaseModule {
     fun provideProductById(defaultRepo: DefaultRepo): GetProductDetailsUseCase {
         return GetProductDetailsUseCase(defaultRepo)
     }
+
     @Provides
     fun provideCategoryProducts(defaultRepo: DefaultRepo): CategoryProductsUseCase {
         return CategoryProductsUseCase(defaultRepo)
     }
+
     @Provides
     fun provideGetAllFav(defaultRepo: DefaultRepo): GetAllFavoritesUseCase {
         return GetAllFavoritesUseCase(defaultRepo)
     }
+
     @Provides
     fun provideCartsUseCase(defaultRepo: DefaultRepo): AddCartUseCase {
         return AddCartUseCase(defaultRepo)
+    }
+
+    //carts
+    @Provides
+    fun provideGetAllCarts(defaultRepo: DefaultRepo): GetAllCartsUseCase {
+        return GetAllCartsUseCase(defaultRepo)
     }
 
 }

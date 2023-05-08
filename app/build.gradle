@@ -117,6 +117,9 @@ dependencies {
     //Picasso
     implementation 'com.squareup.picasso:picasso:2.71828'
 
+    //Country code picker
+    implementation 'com.github.joielechong:countrycodepicker:2.4.2'
+
 }
 kapt {
     correctErrorTypes = true

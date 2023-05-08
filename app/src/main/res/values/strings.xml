@@ -2,4 +2,6 @@
     <string name="app_name">e_commerce App</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="terms_and_conditions">Terms &amp; Conditions</string>
+
 </resources>

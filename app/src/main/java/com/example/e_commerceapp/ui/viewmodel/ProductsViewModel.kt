@@ -22,7 +22,8 @@ class ProductsViewModel @Inject constructor(
     private val getProductDetails: GetProductDetailsUseCase,
     private val getCategoryProducts: CategoryProductsUseCase,
     private val addRemoveCart: AddCartUseCase,
-    private val getAllFav: GetAllFavoritesUseCase
+    private val getAllFav: GetAllFavoritesUseCase,
+    private val getAllCarts: GetAllCartsUseCase
 ) : ViewModel() {
 
     private val TAG = "ProductsViewModel"
@@ -33,7 +34,7 @@ class ProductsViewModel @Inject constructor(
         val categories: Flow<Root>? = null,
         val product: ProductRoot? = null,
         val catProduct: CatProduct? = null,
-        val carts: MyResponse<GetCarts>? = null,
+        val carts: List<CartEntity>? = null,
         val favorites: List<FavoritesEntity>? = null,
         val isLoading: Boolean = false,
         val error: Throwable? = null
@@ -41,12 +42,6 @@ class ProductsViewModel @Inject constructor(
 
     private val _viewStateFlow = MutableStateFlow(ProductsViewState())
     val viewStateFlow: StateFlow<ProductsViewState> = _viewStateFlow
-
-
-    //Carts
-    private val _cartsStateFlow = MutableStateFlow<MyResponse<GetCarts>?>(null)
-    val cartsStateFlow: StateFlow<MyResponse<GetCarts>?> = _cartsStateFlow
-
 
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
 
@@ -99,10 +94,10 @@ class ProductsViewModel @Inject constructor(
     }
 
 
-    fun addRemoveCarts(cartRoot: AddRemoveCartRoot) {
+    fun allCarts(context: Context) {
         coroutineScope.launch {
             try {
-                val carts = addRemoveCart(cartRoot)
+                val carts = getAllCarts(context)
                 _viewStateFlow.value = ProductsViewState(
                     carts = carts,
                     isLoading = true

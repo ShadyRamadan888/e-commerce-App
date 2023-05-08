@@ -6,19 +6,19 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.domain.model.FavoritesEntity
 import com.example.e_commerceapp.R
 import com.example.e_commerceapp.databinding.FragmentFavouritesBinding
 import com.example.e_commerceapp.ui.adapters.FavoritesAdapter
 import com.example.e_commerceapp.ui.viewmodel.ProductsViewModel
-import com.example.e_commerceapp.utils.SwipeToDeleteCallback
+import com.example.e_commerceapp.utils.SwipeFavToDeleteCallback
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -29,7 +29,7 @@ class FavouritesFragment : Fragment() {
     private lateinit var viewModel: ProductsViewModel
     private lateinit var binding: FragmentFavouritesBinding
     private lateinit var favoritesAdapter: FavoritesAdapter
-    private lateinit var swipeToDeleteCallback: SwipeToDeleteCallback
+    private lateinit var swipeFavToDeleteCallback: SwipeFavToDeleteCallback
     private lateinit var itemTouchHelper: ItemTouchHelper
 
     override fun onCreateView(
@@ -46,6 +46,7 @@ class FavouritesFragment : Fragment() {
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.favRecycler.setHasFixedSize(true)
 
+        setUpToolBar()
 
 
         return view
@@ -70,8 +71,8 @@ class FavouritesFragment : Fragment() {
                             favoritesAdapter = FavoritesAdapter(requireContext())
                             favoritesAdapter.setList(it.favorites!!)
                             binding.favRecycler.adapter = favoritesAdapter
-                            swipeToDeleteCallback = SwipeToDeleteCallback(favoritesAdapter)
-                            itemTouchHelper = ItemTouchHelper(swipeToDeleteCallback)
+                            swipeFavToDeleteCallback = SwipeFavToDeleteCallback(favoritesAdapter)
+                            itemTouchHelper = ItemTouchHelper(swipeFavToDeleteCallback)
                             itemTouchHelper.attachToRecyclerView(binding.favRecycler)
                         }
                     } catch (e: Exception) {
@@ -83,6 +84,11 @@ class FavouritesFragment : Fragment() {
                 Log.d(TAG, "SHR: ${e.message}")
             }
         }
+    }
+
+    private fun setUpToolBar() {
+        (requireActivity() as AppCompatActivity).setSupportActionBar(binding.toolBar)
+        binding.toolBar.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.app))
     }
 
 //    private fun getAllFav() {

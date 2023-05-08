@@ -1,6 +1,7 @@
 package com.example.data.repo
 
 import android.content.Context
+import com.example.data.local.carts_room.CartsDatabase
 import com.example.data.local.fav_room.FavoriteDatabase
 import com.example.data.remote.ApiService
 import com.example.domain.model.*
@@ -12,7 +13,8 @@ import javax.inject.Inject
 
 class DefaultRepoImpl @Inject constructor(
     private val apiService: ApiService,
-    private var favoriteDatabase: FavoriteDatabase? = null
+    private var favoriteDatabase: FavoriteDatabase? = null,
+    private var cartsDatabase: CartsDatabase?=null
 ) : DefaultRepo {
     override suspend fun getHomeData(): Flow<Root> = flow {
         val response = apiService.getHomeData("en")
@@ -31,6 +33,12 @@ class DefaultRepoImpl @Inject constructor(
     //Carts
     override suspend fun addCart(sendId: AddRemoveCartRoot): MyResponse<GetCarts> =
         apiService.addRemoveCart("en", sendId)
+
+    //Carts
+    override suspend fun getAllCarts(context: Context): List<CartEntity> {
+        cartsDatabase = CartsDatabase.getInstance(context)
+        return cartsDatabase!!.cartDao().getAllCarts()
+    }
 
     //Favorites
     override suspend fun getAllFav(context: Context): List<FavoritesEntity> {

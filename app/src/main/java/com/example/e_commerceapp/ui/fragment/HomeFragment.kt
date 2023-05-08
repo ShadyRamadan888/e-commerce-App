@@ -29,18 +29,14 @@ class HomeFragment @Inject constructor() : Fragment() {
 
     @Inject
     lateinit var homeProductAdapter: HomeProductAdapter
-
-
+    @Inject
     lateinit var bannerAdapter: BannerAdapter
+    private lateinit var viewModel: ProductsViewModel
     lateinit var facebookShimmerFactory: FacebookShimmerFactory
     private val homeDataScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
-    lateinit var viewModel: ProductsViewModel
     private lateinit var binding: FragmentHomeBinding
-
     private val TAG = "HomeFragment"
 
-    //Connection
-    private lateinit var checkInternetConnection: CheckInternetConnection
 
 
     override fun onCreateView(
@@ -58,15 +54,8 @@ class HomeFragment @Inject constructor() : Fragment() {
         //DI
         val component: MyComponent = DaggerMyComponent.create()
         component.injectHomeFragment(this)
-        //component.injectHomeFragmentContext(requireContext())
 
-        //*****
-        //homeProductAdapter = HomeProductAdapter(requireContext())
-        bannerAdapter = BannerAdapter(requireContext())
-        binding.homeProductRecyclerView.adapter = homeProductAdapter
-        binding.bannerHome.setSliderAdapter(bannerAdapter)
-
-
+        getHomeData()
 
         return view
     }
@@ -75,7 +64,7 @@ class HomeFragment @Inject constructor() : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        callNetworkConnection()
+        //callNetworkConnection()
 
     }
 
@@ -86,28 +75,23 @@ class HomeFragment @Inject constructor() : Fragment() {
         binding.homeProductRecyclerView.setHasFixedSize(true)
         facebookShimmerFactory = FacebookShimmerFactory(binding.shimmerFrameLayout)
 
-//        if (!::homeProductAdapter.isInitialized) {
-//            homeProductAdapter = HomeProductAdapter(requireContext())
+    }
+
+//    private fun callNetworkConnection() {
+//
+//
+//        checkInternetConnection = CheckInternetConnection(requireActivity().application)
+//
+//        checkInternetConnection.observe(requireActivity()) { isConnected ->
+//            if (isConnected) {
+//
+//            } else {
+//                //imageView.setImageResource(R.drawable.wifi_disconnected)
+//                //textView.setText("Network Disconnected")
+//                //textView.setTextColor(Color.parseColor("#F44336"))
+//            }
 //        }
-
-        bannerAdapter = BannerAdapter(requireContext())
-    }
-
-    private fun callNetworkConnection() {
-
-
-        checkInternetConnection = CheckInternetConnection(requireActivity().application)
-
-        checkInternetConnection.observe(requireActivity()) { isConnected ->
-            if (isConnected) {
-                getHomeData()
-            } else {
-                //imageView.setImageResource(R.drawable.wifi_disconnected)
-                //textView.setText("Network Disconnected")
-                //textView.setTextColor(Color.parseColor("#F44336"))
-            }
-        }
-    }
+//    }
 
     private fun setUpToolBar() {
         (requireActivity() as AppCompatActivity).setSupportActionBar(binding.toolBar)
@@ -121,6 +105,7 @@ class HomeFragment @Inject constructor() : Fragment() {
 
 
     private fun getHomeData() {
+        facebookShimmerFactory.startShimmer()
         viewModel.getHome()
         lifecycleScope.launch {
             try {
@@ -130,8 +115,8 @@ class HomeFragment @Inject constructor() : Fragment() {
                             viewState.home!!.collect { homeData ->
                                 homeProductAdapter.updateData(homeData.data.products)
                                 bannerAdapter.updateData(homeData.data.banners)
-                                 updateUI()
-                                 facebookShimmerFactory.stopShimmer()
+                                updateUI()
+                                facebookShimmerFactory.stopShimmer()
                             }
                         } catch (e: Exception) {
                             Log.d(TAG, "SHR: ${e.message}")
@@ -145,21 +130,11 @@ class HomeFragment @Inject constructor() : Fragment() {
     }
 
     private fun updateUI() {
-        // binding.homeProductRecyclerView.visibility = View.VISIBLE
         binding.homeProductRecyclerView.adapter = homeProductAdapter
-        // binding.bannerHome.visibility = View.VISIBLE
         binding.bannerHome.setSliderAdapter(bannerAdapter)
     }
 
-    override fun onResume() {
-        super.onResume()
-        facebookShimmerFactory.startShimmer()
-    }
 
-    override fun onPause() {
-        facebookShimmerFactory.stopShimmer()
-        super.onPause()
-    }
 
     override fun onDestroyView() {
         homeDataScope.cancel()

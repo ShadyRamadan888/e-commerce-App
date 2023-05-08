@@ -1,55 +1,52 @@
 package com.example.e_commerceapp.ui.adapters
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.example.domain.model.FavoritesEntity
+import com.example.domain.model.CartEntity
 import com.example.e_commerceapp.R
+import com.squareup.picasso.Picasso
 
-class FavoritesAdapter(var context: Context) : RecyclerView.Adapter<FavoritesAdapter.ViewHolder>() {
+class CartsAdapter: RecyclerView.Adapter<CartsAdapter.ViewHolder>() {
 
-    lateinit var favList: List<FavoritesEntity>
+     lateinit var cartsList:List<CartEntity>
 
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+
+    class ViewHolder(view:View):RecyclerView.ViewHolder(view){
         val productImage: ImageView = view.findViewById(R.id.product_image)
         val productName: TextView = view.findViewById(R.id.product_name)
         val productPrice: TextView = view.findViewById(R.id.product_price)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.fav_item, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.cart_item,parent,false)
+
         return ViewHolder(view)
     }
 
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val data = favList[position]
-        holder.itemView.tag = position
+        val data = cartsList[position]
+        Picasso.get().load(data.image).into(holder.productImage)
         holder.productName.text = data.name
         holder.productPrice.text = "$"+data.price.toInt().toString()
-        Glide.with(context).load(data.image).into(holder.productImage)
     }
 
     override fun getItemCount(): Int {
-        return favList.size
+        return cartsList.size
     }
 
-    fun setList(list: List<FavoritesEntity>) {
-        this.favList = list
-        notifyDataSetChanged()
+    fun updateList(newList:List<CartEntity>){
+        this.cartsList=newList
     }
-
     fun deleteItem(position: Int) {
-        val mutableList = favList.toMutableList()
+        val mutableList = cartsList.toMutableList()
         mutableList.removeAt(position)
-        favList = mutableList.toList()
+        cartsList = mutableList.toList()
         notifyDataSetChanged()
         notifyItemRemoved(position)
     }

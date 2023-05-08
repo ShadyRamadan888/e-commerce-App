@@ -12,7 +12,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class SwipeToDeleteCallback(private val adapter: FavoritesAdapter) : ItemTouchHelper.Callback() {
+class SwipeFavToDeleteCallback(private val adapter: FavoritesAdapter) : ItemTouchHelper.Callback() {
 
     private val TAG = "SwipeToDeleteCallback"
 
@@ -32,7 +32,6 @@ class SwipeToDeleteCallback(private val adapter: FavoritesAdapter) : ItemTouchHe
     ): Boolean {
         TODO("Not yet implemented")
     }
-
     // Implement the swipe-to-delete functionality
     @SuppressLint("NotifyDataSetChanged")
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {

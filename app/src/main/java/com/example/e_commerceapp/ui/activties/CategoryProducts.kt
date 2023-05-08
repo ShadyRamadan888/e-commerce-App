@@ -47,7 +47,9 @@ class CategoryProducts : AppCompatActivity() {
 
         val categoryID = intent.getIntExtra("catId", 0)
         val categoryName = intent.getStringExtra("CatName")
-        binding.textToolbar.text = categoryName.toString()
+        binding.catToolBar.title = categoryName.toString()
+
+
 
         getData(categoryID)
     }

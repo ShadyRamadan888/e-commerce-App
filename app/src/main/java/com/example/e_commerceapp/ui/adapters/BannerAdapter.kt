@@ -11,8 +11,10 @@ import com.example.domain.model.Banner
 import com.example.e_commerceapp.R
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.smarteist.autoimageslider.SliderViewAdapter
+import com.squareup.picasso.Picasso
+import javax.inject.Inject
 
-class BannerAdapter(var context: Context) : SliderViewAdapter<BannerAdapter.SliderViewHolder>() {
+class BannerAdapter @Inject constructor() : SliderViewAdapter<BannerAdapter.SliderViewHolder>() {
 
     private lateinit var bannerList: List<Banner>
 
@@ -34,7 +36,7 @@ class BannerAdapter(var context: Context) : SliderViewAdapter<BannerAdapter.Slid
     }
 
     override fun onBindViewHolder(viewHolder: SliderViewHolder?, position: Int) {
-        Glide.with(context).load(bannerList[position].image).into(viewHolder!!.bannerImage)
+        Picasso.get().load(bannerList[position].image).into(viewHolder!!.bannerImage)
     }
 
     fun updateData(bannerList: List<Banner>) {

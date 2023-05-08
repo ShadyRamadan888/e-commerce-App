@@ -1,17 +1,22 @@
 package com.example.e_commerceapp.ui.adapters
 
+import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.example.data.local.carts_room.CartsDatabase
 import com.example.data.local.fav_room.FavoriteDatabase
+import com.example.domain.model.CartEntity
 import com.example.domain.model.FavoritesEntity
 import com.example.domain.model.Product
 import com.example.e_commerceapp.R
@@ -19,18 +24,16 @@ import com.example.e_commerceapp.databinding.ProductItemBinding
 import com.example.e_commerceapp.ui.activties.ProductDetailsActivity
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import java.util.logging.Handler
 import javax.inject.Inject
+
 
 class HomeProductAdapter @Inject constructor() :
     RecyclerView.Adapter<HomeProductAdapter.ViewHolder>() {
 
-//    private val _myData = MutableStateFlow(listOf<Product>())
-//    private val myData: StateFlow<List<Product>> = _myData
 
     private var homeList: List<Product> = listOf()
-    private val TAG = "DummyProductAdapter"
+    private val TAG = "HomeProductAdapter"
     private lateinit var context: Context
 
 
@@ -47,10 +50,13 @@ class HomeProductAdapter @Inject constructor() :
         return ViewHolder(binding)
     }
 
+    @SuppressLint("SetTextI18n")
+    @OptIn(DelicateCoroutinesApi::class)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         val data = homeList[position]
         holder.bindingSec!!.product = data
+        holder.bindingSec!!.productPrice.text = "$" + data.price.toInt().toString()
         holder.bindingSec!!.executePendingBindings()
 
         //Navigate to product details(When the user click on a product)
@@ -66,6 +72,13 @@ class HomeProductAdapter @Inject constructor() :
             image = data.image,
             name = data.name,
             in_favorites = true
+        )
+        val cartEntity = CartEntity(
+            productId = data.id,
+            price = data.price,
+            image = data.image,
+            name = data.name,
+            in_cart = true
         )
 
 
@@ -84,6 +97,10 @@ class HomeProductAdapter @Inject constructor() :
                     clicked = 0
                 }
             }
+        }
+
+        holder.addButton.setOnClickListener {
+            addCart(cartEntity)
         }
 
         GlobalScope.launch(Dispatchers.IO) {
@@ -110,6 +127,7 @@ class HomeProductAdapter @Inject constructor() :
     }
 
 
+    @SuppressLint("NotifyDataSetChanged")
     @OptIn(DelicateCoroutinesApi::class)
     private fun addFavorite(favoritesEntity: FavoritesEntity) {
         val favoriteDatabase = FavoriteDatabase.getInstance(context)
@@ -123,6 +141,21 @@ class HomeProductAdapter @Inject constructor() :
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
+    @OptIn(DelicateCoroutinesApi::class)
+    private fun addCart(cartEntity: CartEntity) {
+        val cartsDatabase = CartsDatabase.getInstance(context)
+        GlobalScope.launch(Dispatchers.IO) {
+            try {
+                cartsDatabase.cartDao().addToCart(cartEntity)
+            } catch (e: Exception) {
+                Log.d(TAG, "SHR: ${e.message}")
+            }
+        }
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    @OptIn(DelicateCoroutinesApi::class)
     private fun deleteFavorite(id: Int) {
         val favoriteDatabase = FavoriteDatabase.getInstance(context)
         GlobalScope.launch(Dispatchers.IO) {
@@ -146,7 +179,7 @@ class HomeProductAdapter @Inject constructor() :
         }
 
         val productFavourite: ImageView = binding.imgFavourite
-
+        val addButton: Button = binding.addBtn
 
         //layout
         val itemLayout: LinearLayout = binding.itemLayout
