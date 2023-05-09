@@ -1,3 +1,4 @@
 # e-commerce
  
-![App screens](https://user-images.githubusercontent.com/89228710/237037584-cccde923-610f-4d12-9e78-bd145bda56d3.png)
+![app screens](https://user-images.githubusercontent.com/89228710/237038441-25106762-e6de-4f51-9b67-654d87cdc47e.png)
+
