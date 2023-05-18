@@ -43,10 +43,9 @@ class ProductsViewModel @Inject constructor(
     private val _viewStateFlow = MutableStateFlow(ProductsViewState())
     val viewStateFlow: StateFlow<ProductsViewState> = _viewStateFlow
 
-    private val coroutineScope = CoroutineScope(Dispatchers.IO)
 
     fun getHome() {
-        coroutineScope.launch {
+        viewModelScope.launch {
             try {
                 _viewStateFlow.value = ProductsViewState(
                     home = getHomeData(),
@@ -62,7 +61,7 @@ class ProductsViewModel @Inject constructor(
 
     fun getProduct(id: Int) {
 
-        coroutineScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
                 val product = getProductDetails(id)
                 _viewStateFlow.value = ProductsViewState(
@@ -78,7 +77,7 @@ class ProductsViewModel @Inject constructor(
     }
 
     fun categoryProducts(category_id: Int) {
-        coroutineScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
                 val product = getCategoryProducts(category_id)
                 _viewStateFlow.value = ProductsViewState(
@@ -95,7 +94,7 @@ class ProductsViewModel @Inject constructor(
 
 
     fun allCarts(context: Context) {
-        coroutineScope.launch {
+        viewModelScope.launch {
             try {
                 val carts = getAllCarts(context)
                 _viewStateFlow.value = ProductsViewState(
@@ -112,7 +111,7 @@ class ProductsViewModel @Inject constructor(
 
 
     fun getAllFavorites(context: Context) {
-        coroutineScope.launch {
+        viewModelScope.launch {
             try {
                 val data = getAllFav(context)
                 withContext(Dispatchers.Main) {
@@ -129,9 +128,4 @@ class ProductsViewModel @Inject constructor(
         }
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        //To avoid memory leak
-        coroutineScope.cancel()
-    }
 }
